@@ -1,0 +1,133 @@
+%%%%%%%%%%%%%%%%%%%%%%% file template.tex %%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% This is a general template file for the LaTeX package SVJour3
+% for Springer journals.          Springer Heidelberg 2010/09/16
+%
+% Copy it to a new file with a new name and use it as the basis
+% for your article. Delete % signs as needed.
+%
+% This template includes a few options for different layouts and
+% content for various journals. Please consult a previous issue of
+% your journal as needed.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% First comes an example EPS file -- just ignore it and
+% proceed on the \documentclass line
+% your LaTeX will extract the file if required
+\begin{filecontents*}{example.eps}
+%!PS-Adobe-3.0 EPSF-3.0
+%%BoundingBox: 19 19 221 221
+%%CreationDate: Mon Sep 29 1997
+%%Creator: programmed by hand (JK)
+%%EndComments
+gsave
+newpath
+  20 20 moveto
+  20 220 lineto
+  220 220 lineto
+  220 20 lineto
+closepath
+2 setlinewidth
+gsave
+  .4 setgray fill
+grestore
+stroke
+grestore
+\end{filecontents*}
+%
+\RequirePackage{fix-cm}
+%
+%\documentclass{svjour3}                     % onecolumn (standard format)
+%\documentclass[smallcondensed]{svjour3}     % onecolumn (ditto)
+%\documentclass[smallextended]{svjour3}       % onecolumn (second format)
+%\documentclass[twocolumn]{svjour3}          % twocolumn
+%
+\documentclass[runningheads, a4paper, 10pt]{llncs}
+
+%\smartqed  % flush right qed marks, e.g. at end of proof
+%
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{url}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\usepackage{booktabs}    
+\usepackage{cite}    
+\usepackage{comment}    
+\usepackage{subfig}    
+\usepackage{tabu}
+
+%\usepackage[T1]{fontenc}
+%\usepackage{libertine}%% Only as example for the romans/sans fonts
+%\usepackage[scaled=0.85]{beramono}
+
+
+\usepackage{float}
+\hyphenation{en-co-ded}
+
+%
+% \usepackage{mathptmx}      % use Times fonts if available on your TeX system
+%
+% insert here the call for the packages your document requires
+%\usepackage{latexsym}
+% etc.
+%
+% please place your own definitions here and don't use \def but
+% \newcommand{}{}
+%
+% Insert the name of "your journal" with
+% \journalname{myjournal}
+%
+\begin{document}
+\bibliographystyle{plain}
+
+
+\title{Mind the Gap: Towards Secure 1st-order Masking in Software
+\thanks{
+Removed for submission
+  % The work described in this paper has been supported 
+  % by the Netherlands Organization for Scientific Research NWO under project ProFIL (628.001.007).
+}}
+
+%\titlerunning{Short form of title}        % if too long for running head
+
+\author{Author list removed for submission}
+
+
+
+
+
+
+\institute{Institute list removed for submission
+}
+  
+
+
+
+\maketitle
+
+\begin{abstract}
+Software-based cryptographic implementations are vulnerable to side-channel analysis. To protect against it, implementors often opt for masking countermeasures, which ensure theoretical protection against value-based leakages. However, the practical effectiveness of masking is halted by 
+physical effects such as glitches and distance-based leakages, which violate the \emph{independent leakage assumption} (ILA) and result in security order reductions. This paper aims to address this gap between masking theory and practice in the following threefold manner. First, we perform an in-depth investigation of the device-specific effects that invalidate ILA in the AVR microcontroller ATMega163. Second, we provide an automated tool, capable of detecting ILA violations in AVR assembly code. Last, we craft the first (to our knowledge) \emph{``hardened"} 1st-order ISW-based, masked Sbox implementation, which is capable of resisting 1st-order, univariate side-channel attacks. Enforcing the ILA in the masked RECTANGLE Sbox requires $<>$ clock cycles, i.e. a $<>$-fold increase compared  to a naive 1st-order ISW-based implementation. 
+
+ \keywords{Masking, AVR, independent leakage assumption, distance-based leakage, RECTANGLE, SCA }
+
+\end{abstract}
+
+\input{sections/introduction.tex}
+\input{sections/background.tex}
+\input{sections/effects.tex}
+\input{sections/tool.tex}
+\input{sections/sbox.tex}
+\input{conclusions/conclusions.tex}
+
+%\section{Acknowledgments}
+%Do we have any?
+
+\bibliography{research}
+
+\end{document}
+% end of file template.tex
+
