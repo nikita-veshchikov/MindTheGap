@@ -15,26 +15,6 @@
 % First comes an example EPS file -- just ignore it and
 % proceed on the \documentclass line
 % your LaTeX will extract the file if required
-\begin{filecontents*}{example.eps}
-%!PS-Adobe-3.0 EPSF-3.0
-%%BoundingBox: 19 19 221 221
-%%CreationDate: Mon Sep 29 1997
-%%Creator: programmed by hand (JK)
-%%EndComments
-gsave
-newpath
-  20 20 moveto
-  20 220 lineto
-  220 220 lineto
-  220 20 lineto
-closepath
-2 setlinewidth
-gsave
-  .4 setgray fill
-grestore
-stroke
-grestore
-\end{filecontents*}
 %
 \RequirePackage{fix-cm}
 %
@@ -63,6 +43,7 @@ grestore
 %\usepackage{libertine}%% Only as example for the romans/sans fonts
 %\usepackage[scaled=0.85]{beramono}
 
+\usepackage{todonotes}
 
 \usepackage{float}
 \hyphenation{en-co-ded}
@@ -95,24 +76,17 @@ Removed for submission
 
 \author{Author list removed for submission}
 
-
-
-
-
-
-\institute{Institute list removed for submission
-}
-  
-
-
+\institute{Institute list removed for submission}
 
 \maketitle
 
 \begin{abstract}
-Software-based cryptographic implementations are vulnerable to side-channel analysis. To protect against it, implementors often opt for masking countermeasures, which ensure theoretical protection against value-based leakages. However, the practical effectiveness of masking is halted by 
-physical effects such as glitches and distance-based leakages, which violate the \emph{independent leakage assumption} (ILA) and result in security order reductions. This paper aims to address this gap between masking theory and practice in the following threefold manner. First, we perform an in-depth investigation of the device-specific effects that invalidate ILA in the AVR microcontroller ATMega163. Second, we provide an automated tool, capable of detecting ILA violations in AVR assembly code. Last, we craft the first (to our knowledge) \emph{``hardened"} 1st-order ISW-based, masked Sbox implementation, which is capable of resisting 1st-order, univariate side-channel attacks. Enforcing the ILA in the masked RECTANGLE Sbox requires $<>$ clock cycles, i.e. a $<>$-fold increase compared  to a naive 1st-order ISW-based implementation. 
+Software-based cryptographic implementations are vulnerable to side-channel analysis. 
+Implementors often opt for masking countermeasures, to protect against these types of attacks.
+Masking countermeasures ensure theoretical protection against value-based leakages. However, the practical effectiveness of masking is halted by 
+physical effects such as glitches and distance-based leakages, which violate the \emph{independent leakage assumption} (ILA) and result in security order reductions. This paper aims to address this gap between masking theory and practice in the following threefold manner. First, we perform an in-depth investigation of the device-specific effects that invalidate ILA in the AVR microcontroller ATMega163. Second, we provide an automated tool, capable of detecting ILA violations in AVR assembly code. Last, we craft the first (to our knowledge) \emph{``hardened''} 1st-order ISW-based, masked Sbox implementation, which is capable of resisting 1st-order, univariate side-channel attacks. Enforcing the ILA in the masked RECTANGLE Sbox requires $<>$\todo{add number of cycles} clock cycles, i.e. a $<>$-fold increase compared  to a naive 1st-order ISW-based implementation. 
 
- \keywords{Masking, AVR, independent leakage assumption, distance-based leakage, RECTANGLE, SCA }
+\keywords{Masking, AVR, verification tool, simulator, independent leakage assumption, distance-based leakage, RECTANGLE, SCA }
 
 \end{abstract}
 
