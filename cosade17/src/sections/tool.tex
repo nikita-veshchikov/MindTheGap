@@ -3,7 +3,8 @@
 Several tools that can help designers of cryptographic systems
 were already suggested and discussed in literature.
 
-SILK~\cite{DBLP:conf/acsac/Veshchikov14} presented in 2014
+SILK\footnote{\url{http://www.ulb.ac.be/di/dpalab/download/SILK_v0.1.zip}} 
+presented in 2014~\cite{DBLP:conf/acsac/Veshchikov14}
 can be used to generate simulated traces based on C++ code, it allows
 to generate sets of traces on early stages of development in order to test an implementation
 against any attack. However, SILK works only with C++ high level source code and 
@@ -28,9 +29,59 @@ It can be used with software and hardware implementations
 and it requires only the high-level implementation source code such as C.
 Due to this fact it can be blind to rearangements of opperations 
 (which can lead to side-channel leakage) created by the compiler.
-Up until now, the source code of this tool also remaines unavailable for general public.
+Today the source code of this tool also remaines 
+unavailable\footnote{We have contacted the author, he intents to eventually publish the code.}.
 
+\subsection{ASCOLD}\label{subsec:ascold}
 
-\todo[inline]{Our tool}
+We called our tool ASCOLD for Asembly Code Leakage Detection tool.
+Our tool is written in \texttt{python} and the source code is available on our 
+website\footnote{We will provide a url in the final version of the document. 
+It is not here due to the anonymyty requirement of submissions.}.
+ASCOLD uses assembly code as its input in order to run a simulation while checking for potential
+issues (discussed in Section~\ref{sec:ila_effects}) that can cause side-channel information leakage.
+Shuch tool has to work with assembly code or with compiled binary file
+in order to make sure that the executed code will be exactly the same as the code
+which is analysed, otherwise it is impossible to give any guaranties
+on the queality of the analysis 
+(be sure that no additional issues are introduced during compilation).
 
+The simulation run by our tool does not use an instance of an execution i.e.,
+we do not use specific values in order to run the program.
+ASCOLD starts a program in an initial state and propagates all changes
+such as combinations of values, thier modifications and replacements
+of one vaue by another. More presicely, it keeps track of what mask shares
+(and their combinations) are stored in each register (or memory cell).
+During any arithmetic or logical operation, mask shares stored in different operands
+are verified, specifically we check wheather we combine different shares of the same sensitive value $x$.
+In the same way we verify the implementation for the distance-based leakage,
+for every move, store or load instruction that is executed we verify wheather
+the previously stored value and the new value contain at least one couple of shares $x_0$ and $x_1$ that combine to the same sensitive value $x$. Similarly, our tool tests the effects discussed in Seciton~\ref{mem_remnant},
+our tool has a matrix of \emph{neighbours} that represent registers that can leak while another register is used.
+In order to bootstrap the whole simulation, a developer needs to provide
+a configuration file. The configuration file is a simple text file that contains information about the initial
+state of teh system i.e., it describes which registers or adresses in memory contain different secret shares of sensitive values.
+As the result of the simulation ASCOLD prints out a line number and the rule 
+(created based on the issues discussed in Section~\ref{sec:ila_effects}) that was violated
+by the program.
 
+ASCOLD works with AVR family of microcontrollers, 
+it implements the most common instructions such as load and store instruciton
+as well as a set of commonly used (in cryptography) instrucitons such as arithmetic operations
+(\texttt{add}, \texttt{mul}, $\dots$) and logical operations (\texttt{and}, \texttt{eor}, \texttt{or}, $\dots$)
+Same main principles can be applied
+in order to build a similar tool for a different instruciton set or to add 
+new AVR instrucitons in order to support newer microcontrollers.
+
+\textbf{Limitations} The current version of our tool
+incorporates our findings which are based on the ATMega163, other models of microcontrollers
+might have slightly different (even additional) issues that cause unintentional information leakage.
+Among other things, leakage described in Seciton~\ref{mem_remnant} is more likely to be different (affect different sets of registers) in other models of AVR microcontrollers.
+ASCOLD does not take into account effects of pipelining which might be an issue
+in case of a microcontroller which can potentially handle two different shares of the same sensitive
+value (at different stages of the pipeline) during the same clock cycle.
+We did not implement all AVR instructions, most importantly
+the current version of ASCOLD does not support loops.
+However, we implemented most commonly used instrucitons and any new instruciton
+can be added since our tool is opensource. The lack of jump instructions (loops)
+can be easily disregarded when unrolled implementations are used.
