@@ -13,57 +13,53 @@ The effects under discussion can manifest in several data storage units (e.g. re
 The overwrite effect is observable when a share gets overwritten by a different share from the same family. For instance, if share $x_0$ in a data storage unit (register, memory cell, etc.) gets overwritten by share $x_1$, then the power consumption correlates with the number of bits switched i.e. $x_0 \oplus x_1$. This effect was observed by Daemen et al.~\cite{noteonsca} and later revisited by Coron et al.~\cite{DBLP:conf/cosade/CoronGPRRV12}.\\
  Below, we address the most common situations in which overwriting arises during a cryptographic implementation. We perform two experiments: a register-based overwrite via the instruction \texttt{mov x0, x1}, and a memory-based overwrite via \texttt{st SRAM\_x0 ,  x1}. 
 %Note that overwriting effects can arise due to other instructions and/or storage units. For example, \texttt{ld x0, SRAM\_x1} will cause a similar %effect and it is also subject to the operation remnant effect (see Section \ref{remnant_section}). Overwriting the I/O buffers or partial overwriting via %the \texttt{bld, bst} instructions can produce the same effect (see Appendix A).
+
+\noindent\begin{minipage}{.45\textwidth}
+\lstset{caption={Register overwrite experiment.},label=lst:register_overwrite}
+\begin{lstlisting}
+;share x0 in r17
+;share x1 in r23
+mov r17,r23
+;
+;
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+\lstset{caption={Memory overwrite experiment.},label=lst:memory_overwrite}
+\begin{lstlisting}
+;share x0 in SRAM 0x0080
+;share x1 in r17 
+ldi r27,0x00
+ldi r26,0x80 
+st X,r17 
+\end{lstlisting}
+\end{minipage}
+
 \begin{figure}[H]
-    \centering
-\begin{subfigure}[b]{0.4\textwidth}
-      \texttt{;share x0 in r17 \\
-;share x1 in r23 \\
-\textbf{mov r17,r23}\\
-			}
-
-        \caption{\scriptsize{Register overwrite experiment.}}
-
-    \end{subfigure}
- \begin{subfigure}[b]{0.4\textwidth}
-         \texttt{;share x0 in SRAM 0x0080 \\
-;share x1 in r17  \\
-ldi r27,0x00 \\
-ldi r26,0x80 \\
-st X,r17\\
-}
-
-        \caption{\scriptsize{Memory overwrite experiment.}}
-
-    \end{subfigure}
-
- \begin{subfigure}[b]{0.47\textwidth}
-        %\includegraphics[width=\textwidth]{reg_over_cpa.png}
-
-        \caption{\scriptsize{Register overwrite, 1st-order CPA, HW model, 500 traces.}}
-
-    \end{subfigure}
- \begin{subfigure}[b]{0.47\textwidth}
-       %\includegraphics[width=\textwidth]{reg_over_t_an.png}
-
-        \caption{\scriptsize{Register overwrite, 1st-order t-test, 5k random vs. 5k fixed.}}
-
-    \end{subfigure}
-
+\centering
+\begin{subfigure}[b]{0.47\textwidth}
+	%\includegraphics[width=\textwidth]{reg_over_cpa.png}
+	\caption{\scriptsize{Register overwrite, 1st-order CPA, HW model, 500 traces.}}
+\end{subfigure}
+\begin{subfigure}[b]{0.47\textwidth}
+	%\includegraphics[width=\textwidth]{reg_over_t_an.png}
+	\caption{\scriptsize{Register overwrite, 1st-order t-test, 5k random vs. 5k fixed.}}
+\end{subfigure}
      %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
       %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.47\textwidth}
-        %\includegraphics[width=\textwidth]{memory_over_cpa.png}
-        \caption{\scriptsize{Memory overwrite, 1st-order CPA, HW model, 65k traces.}}
-        \label{fig:tiger}
-    \end{subfigure}
+\begin{subfigure}[b]{0.47\textwidth}
+	%\includegraphics[width=\textwidth]{memory_over_cpa.png}
+	\caption{\scriptsize{Memory overwrite, 1st-order CPA, HW model, 65k traces.}}
+    \label{fig:tiger}
+\end{subfigure}
     %add desired spacing between images, e. g. ~, \quad, \qquad, \hfill etc. 
     %(or a blank line to force the subfigure onto a new line)
-    \begin{subfigure}[b]{0.47\textwidth}
-        %\includegraphics[width=\textwidth]{memory_over_t_an.png}
-        \caption{\scriptsize{Memory overwrite, 1st order t-test, 50k random vs. 50k fixed.}}
+\begin{subfigure}[b]{0.47\textwidth}
+	%\includegraphics[width=\textwidth]{memory_over_t_an.png}
+	\caption{\scriptsize{Memory overwrite, 1st order t-test, 50k random vs. 50k fixed.}}
+\end{subfigure}
 
-    \end{subfigure}
-    \caption{Register/memory-based overwrite effects}\label{fig:mem}
+\caption{Register/memory-based overwrite effects}\label{fig:mem}
 \end{figure}
 %Causing overwrites is also possible via load/store instructions from/to Flash memory , yet the high computational cost of accessing the Flash memory %makes it less common situation in cryptographic implementations (although it has exhibited potential for AVR and TI-based %microcontrollers~\cite{shuffled, feram}). 
 We confirm that overwriting is indeed an ILA-breaching effect, manifesting both in registers and SRAM memory. Note that the exploitability of the effect varies according to the data storage unit: in ATMega163, register-based overwriting can be exploited with roughly 500 traces, while memory-based requires at least 40k traces. Preventing register/memory-based overwrites is straightforward: the corresponding register/cell needs to be cleared in advance. We confirm experimentally that this solution remains secure against a $<>$k \todo{add value} random vs. $<>$k fixed, 1st-order t-test (see Appendix A\todo{add appendix}).
@@ -74,69 +70,62 @@ We confirm that overwriting is indeed an ILA-breaching effect, manifesting both 
 
 The memory remnant effect is a type of leakage originating from consecutive SRAM accesses to different shares of the same family. For instance, assume that shares $x_0$, $x_1$ are stored in SRAM cells and get accessed sequentially. Naturally, the first access leaks share $x_0$ (value-based leakage), yet it also creates a ``remnant" of $x_0$. The second memory access will leak share $x_1$ (value-based leakage) \emph{and} the remnant $x_0$ concurrently, reducing the security order of the scheme.
 
-We address this scenario with the two following experiments. First, we demonstrate how two consecutive SRAM accesses \texttt{ld rA, SRAM\_x0} and \texttt{ld rB, SRAM\_x1} produce the remnant effect. Second, we show how clearing the register and inserting a dummy SRAM access can remove the remnant.    
-\begin{figure}[H]
-    \centering
-\begin{subfigure}[b]{0.4\textwidth}
-      \texttt{;share x0 in 0x0080 \\
-;share x1 in 0x0090 \\
-ldi r27, 0x00\\
-ldi r26, 0x80\\
-ld r17, X\\
-ldi r27, 0x00\\
-ldi r26, 0x90\\
-ld r20, X
-			}
+We address this scenario with the two following experiments. First, we demonstrate how two consecutive SRAM accesses \texttt{ld rA, SRAM\_x0} and \texttt{ld rB, SRAM\_x1} produce the remnant effect (Listing~\ref{lst:remnant}). Second, we show how clearing the register and inserting a dummy SRAM access can remove the remnant (Listing~\ref{lst:clearing_remnant}).
 
-        \caption{\scriptsize{Memory remnant experiment.}}
-
-    \end{subfigure}
-\begin{subfigure}[b]{0.4\textwidth}
-          \texttt{;share x0 in 0x0080 \\
-;share x1 in 0x0090 \\
-ldi r27, 0x00\\
-ldi r26, 0x80\\
-ld r17, X\\
-ldi r17, 0x00\\ 
-ldi r26, 0x85\\
-ld r17, X\\
-ldi r26, 0x90\\
+\begin{minipage}{.45\textwidth}
+\lstset{caption={Memory remnant experiment.}, label=lst:remnant}
+\begin{lstlisting}
+;share x0 in 0x0080
+;share x1 in 0x0090
+ldi r27, 0x00
+ldi r26, 0x80
+ld r17, X
+ldi r27, 0x00
+ldi r26, 0x90
 ld r20, X
-			}
+;
+;
+\end{lstlisting}
+\end{minipage}\hfill
+\begin{minipage}{.45\textwidth}
+\lstset{caption={Clearing remnant experiment.},label=lst:clearing_remnant}
+\begin{lstlisting}
+;share x0 in 0x0080
+;share x1 in 0x0090
+ldi r27, 0x00
+ldi r26, 0x80
+ld r17, X
+ldi r17, 0x00 
+ldi r26, 0x85
+ld r17, X
+ldi r26, 0x90
+ld r20, X
+\end{lstlisting}
 \todo[inline]{should it be r17 in 'ldi r17, 0x00' and in the 2nd 'ld r17, X'?}
-        \caption{\scriptsize{Clearing remnant experiment.}}
+\end{minipage}
 
-    \end{subfigure}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.47\textwidth}
+	%\includegraphics[width=\textwidth]{mem_rem_cpa.png}
+	\caption{\scriptsize{Memory remnant effect,1st-order CPA, HW model, 500 traces.}}
+\end{subfigure}
+\begin{subfigure}[b]{0.47\textwidth}
+ 	%\includegraphics[width=\textwidth]{mem_rem_t_an.png}
+	\caption{\scriptsize{Memory remnant effect, 1st-order t-test, 5k random vs. 5k fixed.}}
+\end{subfigure}
+\begin{subfigure}[b]{0.47\textwidth}
+ 	%\includegraphics[width=\textwidth]{clear_rem_cpa.png}
+	\caption{\scriptsize{Clearing remnant effect,1st-order CPA, HW model, 100k traces.}}
+\end{subfigure}
+\begin{subfigure}[b]{0.47\textwidth}
+	%\includegraphics[width=\textwidth]{clear_rem_t.png}
+	\caption{\scriptsize{Clearing remnant effect, 1st-order t-test, 100k random vs. 100k fixed.}}
+\end{subfigure}
 
-
- \begin{subfigure}[b]{0.47\textwidth}
-        %\includegraphics[width=\textwidth]{mem_rem_cpa.png}
-
-        \caption{\scriptsize{Memory remnant effect,1st-order CPA, HW model, 500 traces.}}
-
-    \end{subfigure}
- \begin{subfigure}[b]{0.47\textwidth}
-      %\includegraphics[width=\textwidth]{mem_rem_t_an.png}
-
-        \caption{\scriptsize{Memory remnant effect, 1st-order t-test, 5k random vs. 5k fixed.}}
-
-    \end{subfigure}
- \begin{subfigure}[b]{0.47\textwidth}
-        %\includegraphics[width=\textwidth]{clear_rem_cpa.png}
-
-        \caption{\scriptsize{Clearing remnant effect,1st-order CPA, HW model, 100k traces.}}
-
-    \end{subfigure}
- \begin{subfigure}[b]{0.47\textwidth}
-       %\includegraphics[width=\textwidth]{clear_rem_t.png}
-
-        \caption{\scriptsize{Clearing remnant effect, 1st-order t-test, 100k random vs. 100k fixed.}}
-
-    \end{subfigure}
-
-   
-    \caption{Memory remnant effect}\label{fig:regleak}
+\caption{Memory remnant effect}\label{fig:regleak}
 \end{figure}
+
 As shown above, consecutive SRAM accesses can potentially lead to ILA violations. Preventing this requires the clearing of the register and the insertion of dummy SRAM. Alternatively, the implementor could ensure that same-family shares are not accessed sequentially. Exploiting (in a univariate manner) the memory remnant effect in ATMega163 requires less than 500 traces with our setup. The \texttt{st} instruction produces a similar effect (see Appendix A\todo{add appendix}).
 \end{subsection}
 
@@ -146,59 +135,38 @@ As shown above, consecutive SRAM accesses can potentially lead to ILA violations
 The combined leakage effect implies that accessing or processing the contents of a data storage unit will cause leakage in another unit as well. For example, assume that share $x_0$ is stored in register \texttt{rB} and share $x_1$ is being processed in register \texttt{rA}. Assume also that the registers \texttt{rA, rB} are subject to the combined leakage effect. Processing \texttt{rB} will produce a value-based leakage of $x_1$. At the same time, the combined leakage effect will cause \texttt{rA} to leak the value of $x_0$, resulting in the concurrent leakage of both shares, revealing the sensitive value $x$.
 
 The following two experiments verify the combined leakage effect between registers \texttt{r2, r3}, i.e. that a share stored in \texttt{r2} leaks when manipulating \texttt{r2} \emph{or} \texttt{r3} and vice-versa.
+We use the same code from Listing~\ref{combined_leakage}, but first time we put the sensitive variable into the register \texttt{r2} (\emph{only} line~\ref{line:r2} should result in leakage)
+and secont time we put the sensitive value into the register 
+\texttt{r3} (\emph{only} line~\ref{line:r3} should leak).
+
+\lstset{caption={Combined leakage \texttt{r2} and \texttt{r3}.},label=lst:combined_leakage}
+\begin{lstlisting}
+; clear all registers
+; x is in the selected register (r2 OR r3)
+mov r0, r0
+nop ; x5
+mov r1, r1
+nop ; x5 
+mov r2, r2 @\label{line:r2}@
+nop ; x5
+mov r3, r3 @\label{line:r3}@
+nop ; x5
+...
+mov r31, r31 
+\end{lstlisting}
+
 \begin{figure}[H]
-    \centering
-\begin{subfigure}[b]{0.4\textwidth}
-\texttt{;clear all registers\\
-;store x0 in r2 \\
-mov r0, r0\\
-NOPs \\
-mov r1, r1\\
-NOPs \\
-mov r2, r2\\
-NOPs \\
-mov r3, r3 \\
-NOPs \\
-...\\
-mov r31, r31 }
+\centering
+\begin{subfigure}[b]{0.47\textwidth}
+ 	%\includegraphics[width=\textwidth]{corr_r23_an.png}
+	\caption{\scriptsize{Correlation \texttt{r2-r3} $\rho(HW(x_0),traceset)$, 5k traces.}}
+\end{subfigure}
+\begin{subfigure}[b]{0.47\textwidth}
+ 	%\includegraphics[width=\textwidth]{corr_r32_an.png}
+	\caption{\scriptsize{Correlation \texttt{r3-r2} $\rho(HW(x_0),traceset)$, 5k traces.}}
+\end{subfigure}
 
-        \caption{\scriptsize{Combined leakage \texttt{r2-r3}.}}
-
-    \end{subfigure}
-\begin{subfigure}[b]{0.4\textwidth}
-\texttt{;clear all registers\\
-;store x0 in r3 \\
-mov r0, r0\\
-NOPs \\
-mov r1, r1\\
-NOPs \\
-mov r2, r2\\
-NOPs \\
-mov r3, r3 \\
-NOPs \\
-...\\
-mov r31, r31 }
-
-        \caption{\scriptsize{Combined leakage \texttt{r3-r2}.}}
-
-    \end{subfigure}
-
-
- \begin{subfigure}[b]{0.47\textwidth}
-        %\includegraphics[width=\textwidth]{corr_r23_an.png}
-
-        \caption{\scriptsize{Correlation \texttt{r2-r3} $\rho(HW(x_0),traceset)$, 5k traces.}}
-
-    \end{subfigure}
- \begin{subfigure}[b]{0.47\textwidth}
-        %\includegraphics[width=\textwidth]{corr_r32_an.png}
-
-        \caption{\scriptsize{Correlation \texttt{r3-r2} $\rho(HW(x_0),traceset)$, 5k traces.}}
-
-    \end{subfigure}
-
-   
-    \caption{Combined leakage effect.}\label{fig:regleak}
+\caption{Combined leakage effect.}\label{fig:regleak}
 \end{figure}
 
 
