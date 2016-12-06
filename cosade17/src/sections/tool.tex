@@ -1,6 +1,35 @@
 \section{Detection Tool}\label{sec:tool}
 
-\todo[inline]{Existing tools~\cite{DBLP:conf/acsac/Veshchikov14}~\cite{DBLP:conf/eurocrypt/BartheBDFGS15}~\cite{DBLP:conf/fse/Reparaz16}}
+Several tools that can help designers of cryptographic systems
+were already suggested and discussed in literature.
+
+SILK~\cite{DBLP:conf/acsac/Veshchikov14} presented in 2014
+can be used to generate simulated traces based on C++ code, it allows
+to generate sets of traces on early stages of development in order to test an implementation
+against any attack. However, SILK works only with C++ high level source code and 
+can not take into account reordering of instructions that is often used by compilers during
+optimisation. Also, this tool does not detect flaws in implementations, 
+it only allows to easily generate simulated traces that can be used for tests.
+
+A tool based on formal verification 
+was presented at EUROCRYPT in 2015~\cite{DBLP:conf/eurocrypt/BartheBDFGS15},
+it can detect design flaws in masking schemes.
+This tool can analyse programs written using EasyCrypt framework and its language,
+it requires a designer to transform the original implementation (e.g., in assembly or C code)
+to EasyCrypt. Unfortunately, errors cound potentially be introduced during this process
+and there is no garantee that the programm written using EasyCrypt will be equivalent
+to the programm in the original programming language, the the best of our knowledge
+free automated tools that can transform C or assembly programms to EasyCrypt do not exist.
+Moreover, this tool is not opensource and thus can not be used by any developer.
+
+A simulation tool based tool that can be used to analyse masking implementations
+was presented at FSE in 2016~\cite{DBLP:conf/fse/Reparaz16}.
+It can be used with software and hardware implementations
+and it requires only the high-level implementation source code such as C.
+Due to this fact it can be blind to rearangements of opperations 
+(which can lead to side-channel leakage) created by the compiler.
+Up until now, the source code of this tool also remaines unavailable for general public.
+
 
 \todo[inline]{Our tool}
 
