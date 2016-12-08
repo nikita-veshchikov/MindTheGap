@@ -8,7 +8,8 @@ presented in 2014~\cite{DBLP:conf/acsac/Veshchikov14}
 can be used to generate simulated traces based on C++ code. Thus, it allows
 to generate tracesets during the early stages of development, in order to test an implementation
 against any attack. However, SILK works only with high level, C++  source code and 
-can not take into account reordering/removal of instructions that is often used by compilers during
+can not take into account reordering or replacement (even removal) 
+of instructions that is often used by compilers during
 optimization. Also, this tool does not detect flaws in implementations, 
 it only allows to easily generate simulated traces that can be used for tests.
 
@@ -20,7 +21,9 @@ it requires the designer to transform the original implementation (e.g. assembly
 to EasyCrypt. Unfortunately, errors could potentially be introduced during this process
 and there is no guarantee that the program written using EasyCrypt will be equivalent
 to the program in the original programming language. To the best of our knowledge, 
-free automated tools that can transform C or assembly programs to EasyCrypt do not exist.
+free automated tools that can transform C or assembly 
+(or other languages that are often used for development of cryptographic software in embedded systems) 
+programs to EasyCrypt do not exist.
 Moreover, this tool is not opensource and thus can not be used by the developer community.
 
 A simulation-based tool that can be used to analyze masking implementations
@@ -40,10 +43,11 @@ website\footnote{A url will be provided in the final version of the document.
 It currently removed due to the anonymity requirement of submissions.}.
 ASCOLD uses assembly code as its input in order to run a simulation while checking for potential
 issues that can cause side-channel information leakage.
-The tool is compatible only with assembly code or with the compiled binary file, 
-in order to make sure that the executed code will be exactly the same as the code
+The tool is compatible only with assembly code 
+(which can be used as is durring the development or extracted from the compiled binary file). 
+Thus it is possible to be sure that the executed code will be exactly the same as the code
 which is analyzed. Otherwise, it becomes impossible to provide any guarantees
-on the quality of the analysis, i.e. make sure that no additional issues are introduced during compilation.
+on the quality of the analysis, i.e. be sure that no additional issues are introduced during compilation.
 
 The simulation run by the tool does not use an instance of an execution i.e.,
 we do not use specific values in order to run the program.

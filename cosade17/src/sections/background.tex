@@ -7,10 +7,17 @@ x = x_0 \oplus  x_1 \oplus \dots \oplus x_d
 \end{equation}
 The shares $(x_0, x_1, \dots, x_d)$ are also referred to as the $(d+1)$-family of shares corresponding to $x$~\cite{DBLP:conf/ches/RivainP10}. Given that the ILA holds and assuming sufficient noise, it has been shown that the number of traces required for a successful attack grows exponentially w.r.t. the order $d$~\cite{DBLP:conf/crypto/ChariJRR99,DBLP:conf/eurocrypt/ProuffR13}. Several implementation options have been suggested for the masking countermeasure, ranging from lookup-table techniques~\cite{DBLP:conf/eurocrypt/Coron14,DBLP:conf/ctrsa/WangVGX15} to $GF$-based circuits~\cite{DBLP:conf/crypto/IshaiSW03,DBLP:journals/iacr/CanrightB09,DBLP:conf/ches/RivainP10,cryptoeprint:2016:264}.
 
-In parallel with the development of masked implementations, side-channel research focused on the practical evaluation of the countermeasure. Balasch et al.~\cite{DBLP:conf/cardis/BalaschGGRS14} put forward the concepts of value-based and distance-based leakages, as well as the notion of order reduction. We briefly restate their definitions below.\\\\
-\textbf{Value/Distance-based leakage function}: A leakage function $L(.)$ consists of a deterministic part $L_d(.)$ and random additive noise $N$. The leakage function is \emph{value-based} if $L_d(.)$ can only take arguments from the set of intermediate values produced by the masking scheme. The leakage is \emph{distance-based} if $L_d(.)$ can  take arguments from the set that contains all possible pairwise combinations of intermediate values. The combination can imply operations such as XOR, concatenation, etc.  \\\\
-\textbf{Order-reduction theorem}: A $d$th-order secure masking scheme under value-based leakages is $\lfloor \frac{d}{2} \rfloor$th-order secure under distance-based leakages.\\\\
-The order-reduction theorem has been verified experimentally for orders $d=1,2$ by Balasch et al.~\cite{DBLP:conf/cardis/BalaschGGRS14} in AVR-based and 8051-based devices. De Groot et al.~\cite{DBLP:journals/iacr/GrootPPSB16} have verified experimentally the theorem for orders $d=1,2$ in the ARM Cortex-M4.
+In parallel with the development of masked implementations, side-channel research focused on the practical evaluation of the countermeasure. Balasch et al.~\cite{DBLP:conf/cardis/BalaschGGRS14} put forward the concepts of value-based and distance-based leakages, as well as the notion of order reduction. We briefly restate their definitions below.
+
+\vspace{0.15cm}
+\noindent\textbf{Value/Distance-based leakage function} A leakage function $L(.)$ consists of a deterministic part $L_d(.)$ and random additive noise $N$. The leakage function is \emph{value-based} if $L_d(.)$ can only take arguments from the set of intermediate values produced by the masking scheme. The leakage is \emph{distance-based} if $L_d(.)$ can  take arguments from the set that contains all possible pairwise combinations of intermediate values. The combination can imply operations such as XOR, concatenation, etc.
+
+\vspace{0.15cm}
+\noindent\textbf{Order-reduction theorem} A $d$th-order secure masking scheme under value-based leakages is $\lfloor \frac{d}{2} \rfloor$th-order secure under distance-based leakages.
+\vspace{0.15cm}
+
+The order-reduction theorem has been verified experimentally by Balasch et al.~\cite{DBLP:conf/cardis/BalaschGGRS14} for orders $d=1,2$ in AVR-based and 8051-based devices. De Groot et al.~\cite{DBLP:journals/iacr/GrootPPSB16} have verified experimentally the theorem for orders $d=1,2$ in the ARM Cortex-M4.
+
 \subsection{Experimental Setup \& Evaluation}
 The implementation and SCA evaluation is performed on a smartcard equipped with an 8-bit, AVR-based ATMega163 microcontroller\footnote{\url{http://www.atmel.com/images/doc1142.pdf}}. 
 The device features a 4.4~MHz clock, 1024 bytes of SRAM and 17 Kbytes of Flash memory. 
