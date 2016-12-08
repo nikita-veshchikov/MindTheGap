@@ -23,27 +23,27 @@ Unprotected  & no & 32 & 250 & 0 \\ \hline
 Using the 1st-order, random vs. fixed t-test, we evaluate the efficient and conservative ``hardened" 1st-order Sboxes, as well as the ``naive" 1st-order Sbox. Using a $25$k random vs. $25$k fixed t-test does not yield any statistically significant leakage in the efficient ``hardened" version (Figure~\ref{hardbox_eff}). However, wenote that a $50$k random vs. $50$k fixed t-test is able to detect leakage, i.e. trying to reduce the cost of enforcing ILA can have a detrimental effect on security. For the conservative ``hardened" Sbox, a 100k random vs. 100k fixed t-test does not detect any leakage (Figure~\ref{hardbox_cons}). Note that a \emph{2nd-order} $25$k random vs. $25$k fixed t-test on a chosen sample window is able to detect leakage. Therefore, we conclude that for the given device, the informativeness of 1st-order attacks is substantially limited and a 2nd-order attack is the preferable adversarial strategy (Figure~\ref{t_order2}). Naturally, the ``naive" 1st-order version rejects the null hypothesis (Figure~\ref{softbox}) due to the ILA-breaching effects and the 1st-order leakage can be easily exploited.
 \begin{figure}[H]
 \centering
- \begin{subfigure}[b]{0.40\textwidth}
-        \includegraphics[width=\textwidth]{{fig/hardbox_eff.png}}
+ \begin{subfigure}[b]{0.47\textwidth}
+        \includegraphics[width=\textwidth]{{fig_pdf/hardbox_eff.pdf}}
 
         \caption{\scriptsize{Efficient hardened Sbox, 1st-order t-test, 25k random vs. 25k fixed.}}
 \label{hardbox_eff}
     \end{subfigure}  \hspace{15px}
- \begin{subfigure}[b]{0.40\textwidth}
+ \begin{subfigure}[b]{0.47\textwidth}
         \includegraphics[width=\textwidth]{{fig_pdf/hardbox_cons.pdf}}
 
         \caption{\scriptsize{Conservative hardened Sbox, 1st-order t-test, 100k random vs. 100k fixed.}}
 \label{hardbox_cons}
     \end{subfigure}
 
-\begin{subfigure}[b]{0.40\textwidth}
+\begin{subfigure}[b]{0.47\textwidth}
         \includegraphics[width=\textwidth]{{fig_pdf/t_order2.pdf}}
 
         \caption{\scriptsize{Consevative hardened Sbox, 2nd-order t-test, 25k random vs. 25k fixed.}}
 \label{t_order2}
     \end{subfigure} \hspace{15px}
- \begin{subfigure}[b]{0.40\textwidth}
-        \includegraphics[width=\textwidth]{{fig/softbox.png}}
+ \begin{subfigure}[b]{0.47\textwidth}
+        \includegraphics[width=\textwidth]{{fig_pdf/softbox.pdf}}
 
         \caption{\scriptsize{Naive Sbox, 1st-order t-test, 1k random vs. 1k fixed.}}
 \label{softbox}
