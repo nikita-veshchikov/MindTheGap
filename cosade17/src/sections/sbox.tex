@@ -30,14 +30,14 @@ Using the 1st-order, random vs. fixed t-test, we evaluate the efficient and cons
 \label{hardbox_eff}
     \end{subfigure}  \hspace{15px}
  \begin{subfigure}[b]{0.40\textwidth}
-        \includegraphics[width=\textwidth]{{fig/hardbox_cons.png}}
+        \includegraphics[width=\textwidth]{{fig_pdf/hardbox_cons.pdf}}
 
         \caption{\scriptsize{Conservative hardened Sbox, 1st-order t-test, 100k random vs. 100k fixed.}}
 \label{hardbox_cons}
     \end{subfigure}
 
 \begin{subfigure}[b]{0.40\textwidth}
-        \includegraphics[width=\textwidth]{{fig/t_order2.png}}
+        \includegraphics[width=\textwidth]{{fig_pdf/t_order2.pdf}}
 
         \caption{\scriptsize{Consevative hardened Sbox, 2nd-order t-test, 25k random vs. 25k fixed.}}
 \label{t_order2}
@@ -53,6 +53,5 @@ Using the 1st-order, random vs. fixed t-test, we evaluate the efficient and cons
     \caption{Hardened and naive Sbox evaluations}\label{fig:sboxleak}
 \end{figure}
 So far, the only way to guarantee the actual security order of a real-world implementation was to increase the scheme's theoretical order $d$, in order to ensure that the implementation attains an actual order of $\lfloor \frac{d}{2} \rfloor$~\cite{DBLP:conf/cardis/BalaschGGRS14, DBLP:journals/iacr/GrootPPSB16}. Clearing the ILA-breaching effects requires a significant overhead and is device-dependent, yet it is the only technique known to us that can enforce 1st-order, univariate security. In addition, hardening does not increase the scheme order $d$, thus the random number generation (RNG) cost is not increased. The previous suggestions require a higher scheme order, hence a significant overhead, since both the implementation cost and the RNG cost are quadratic w.r.t. the order. We compare the ``hardened" 1st-order and ``naive" 2nd-order implementation costs (in clock cycles) and we observe that hardening the 1st-order Sbox is slower than increasing the scheme's order from 1 to 2 (both in the efficient and in the conservative case). Still, the solution requires no extra RNG and we maintain that removing these effects can also be beneficial to higher-order implementations, i.e. it is complimentary to masking. The extent to which higher-order implementations can benefit from removing such effects remains an open problem.
-
 
 
