@@ -6,17 +6,19 @@ Our implementation opts for a bitsliced~\cite{DBLP:conf/fse/Biham97a} representa
 In order to ``harden" the Sbox, we use the solutions suggested in Section~\ref{sec:ila_effects} and follow two approaches: efficient and conservative. In the \emph{efficient} approach, after processing any share, we clear the registers on a need-to basis and insert dummy \texttt{ld} instructions to avoid overwrite and remnant effects. We avoid neighbouring leakage effects by always storing the shares in SRAM, i.e. the register file contains only the shares used by the current instruction. In the \emph{conservative} approach, we perform all the afore-mentioned clearing techniques. In addition, we insert dummy \texttt{st} instructions and perform thorough register/memory clearing. Both efficient and conservative approaches are applied to every single instruction of the implementation, i.e. the cost is linear w.r.t. the number of instructions that manipulate masked shares. The resulting computational overhead is significant: the efficient ``hardened" Sbox implementation runs in 993 clock cycles, i.e. almost 12 times slower compared to the ``naive" 1st-order, ISW-based RECTANGLE Sbox, which runs in $87$ clock cycles. The conservative ``hardened" Sbox implementation requires 1319 clock cycles, i.e. it is 15 times slower. Table~\ref{cc_table} contains a comparison between ``naive" 1st-order, ``naive" 2nd-order and efficient/conservative ``hardened" 1st-order bitsliced implementations of the RECTANGLE Sbox in AVR assembly.
 \begin{table}[H]
 \centering
-\caption{Masked Sbox comparison in ATMega163}
+\caption{Masked Sbox comparison in ATMega163.}
 \label{cc_table}
 \begin{tabular}{ |l|l|l|l|l|}
 \hline
-\textbf{Order $\mathbf{d}$} & \textbf{Hardened} & \textbf{Latency (cc) }& \textbf{Throughput} \textbf{(bits/cc $\mathbf{*10^{-3}}$)} & \textbf{RNG (bytes)} \\ 
+
+\multirow{2}{*}{\textbf{Order $\mathbf{d}$}} & \multirow{2}{*}{\textbf{Hardened}} & \textbf{Latency}& \textbf{Throughput} & \textbf{RNG} \\ 
+						& & \textbf{cycles}& \textbf{bits/cycle $\mathbf{\times 10^{-3}}$} & \textbf{bytes} \\ 
 \hline \hline 
-Unprotected  & no & 32 & 250 & 0 \\ \hline
-1st order      &   no & 87 & 91 &  4\\ \hline
- 1st order      &   yes (eff.)& 993 & 8 & 4\\ \hline
- 1st order      &   yes (cons.) & 1319 & 6 & 4\\ \hline
- 2nd order     &   no  & 775 & 10 & 12\\ \hline
+Unprotected  			  & no & 32 & 250 & 0 \\ \hline
+\multirow{3}{*}{1st order}&   no & 87 & 91 &  4\\ \cline{2-5}
+			 		      &   yes (eff.)& 993 & 8 & 4\\ \cline{2-5}
+ 					      &   yes (cons.) & 1319 & 6 & 4\\ \hline
+2nd order	 			  &   no  & 775 & 10 & 12\\ \hline
 \end{tabular}
 \end{table}
 
