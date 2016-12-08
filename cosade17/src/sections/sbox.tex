@@ -10,18 +10,19 @@ In order to ``harden" the Sbox, we use the solutions suggested in Section~\ref{s
 \label{cc_table}
 \begin{tabular}{ |l|l|l|l|l|}
 \hline
-\textbf{Order $\mathbf{d}$} & \textbf{Hardened} & \textbf{Latency (cc) }& \pbox{20cm}{ \textbf{Throughput} \\ \textbf{(bits/cc $\mathbf{*10^{-3}}$)} }& \textbf{RNG (bytes)} \\ \hline \hline 
+\multirow{2}{*}{\textbf{Order $\mathbf{d}$}} & \multirow{2}{*}{\textbf{Hardened}} & \textbf{Latency}& \textbf{Throughput} & \textbf{RNG} \\
+		& & \textbf{cycles} &   \textbf{bits/cycle $\mathbf{\times 10^{-3}}$} & \textbf{bytes} \\ \hline \hline 
 Unprotected  & no & 32 & 250 & 0 \\ \hline
-1st order      &   no & 87 & 91 &  4\\ \hline
- 1st order      &   yes (eff.)& 993 & 8 & 4\\ \hline
- 1st order      &   yes (cons.) & 1319 & 6 & 4\\ \hline
- 2nd order     &   no  & 775 & 10 & 12\\ \hline
+\multirow{3}{*}{1st order}&   no & 87 & 91 &  4\\ \cline{2-5}
+       			 &   yes (eff.)& 993 & 8 & 4\\ \cline{2-5}
+ 		      	 &   yes (cons.) & 1319 & 6 & 4\\ \hline
+ 2nd order     	 &   no  & 775 & 10 & 12\\ \hline
 \end{tabular}
 \end{table}
 
 Using the 1st-order, random vs. fixed t-test, we evaluate the efficient and conservative ``hardened" 1st-order Sboxes, as well as the ``naive" 1st-order Sbox. Using a $25$k random vs. $25$k fixed t-test does not yield any statistically significant leakage in the efficient ``hardened" version (Figure~\ref{hardbox_eff}). However, wenote that a $50$k random vs. $50$k fixed t-test is able to detect leakage, i.e. trying to reduce the cost of enforcing ILA can have a detrimental effect on security. For the conservative ``hardened" Sbox, a 100k random vs. 100k fixed t-test does not detect any leakage (Figure~\ref{hardbox_cons}). Note that a \emph{2nd-order} $25$k random vs. $25$k fixed t-test on a chosen sample window is able to detect leakage. Therefore, we conclude that for the given device, the informativeness of 1st-order attacks is substantially limited and a 2nd-order attack is the preferable adversarial strategy (Figure~\ref{t_order2}). Naturally, the ``naive" 1st-order version rejects the null hypothesis (Figure~\ref{softbox}) due to the ILA-breaching effects and the 1st-order leakage can be easily exploited.
 \begin{figure}[H]
-
+\centering
  \begin{subfigure}[b]{0.40\textwidth}
         \includegraphics[width=\textwidth]{{fig/hardbox_eff.png}}
 
@@ -52,21 +53,6 @@ Using the 1st-order, random vs. fixed t-test, we evaluate the efficient and cons
     \caption{Hardened and naive Sbox evaluations}\label{fig:sboxleak}
 \end{figure}
 So far, the only way to guarantee the actual security order of a real-world implementation was to increase the scheme's theoretical order $d$, in order to ensure that the implementation attains an actual order of $\lfloor \frac{d}{2} \rfloor$~\cite{DBLP:conf/cardis/BalaschGGRS14, DBLP:journals/iacr/GrootPPSB16}. Clearing the ILA-breaching effects requires a significant overhead and is device-dependent, yet it is the only technique known to us that can enforce 1st-order, univariate security. In addition, hardening does not increase the scheme order $d$, thus the random number generation (RNG) cost is not increased. The previous suggestions require a higher scheme order, hence a significant overhead, since both the implementation cost and the RNG cost are quadratic w.r.t. the order. We compare the ``hardened" 1st-order and ``naive" 2nd-order implementation costs (in clock cycles) and we observe that hardening the 1st-order Sbox is slower than increasing the scheme's order from 1 to 2 (both in the efficient and in the conservative case). Still, the solution requires no extra RNG and we maintain that removing these effects can also be beneficial to higher-order implementations, i.e. it is complimentary to masking. The extent to which higher-order implementations can benefit from removing such effects remains an open problem.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
