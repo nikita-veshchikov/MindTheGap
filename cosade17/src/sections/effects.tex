@@ -1,6 +1,6 @@
 \section{ILA-Breaching Effects}\label{sec:ila_effects}
 
-\todo[inlne]{The authors study three effects on an 8-bit AVR microcontroller in detail, namely the overwrite effect, the memory remnant effect, and the neighbor leakage effect. While the experiments clearly confirm the potential threat of these effects to masked software implementation of symmetric ciphers, I miss in Section 3 a more in-depth discussion of what *exactly* causes these effects at the micro-architectural level. }
+\todo[inline]{The authors study three effects on an 8-bit AVR microcontroller in detail, namely the overwrite effect, the memory remnant effect, and the neighbor leakage effect. While the experiments clearly confirm the potential threat of these effects to masked software implementation of symmetric ciphers, I miss in Section 3 a more in-depth discussion of what *exactly* causes these effects at the micro-architectural level. }
 
 \todo[inline]{What I like in this section is that the authors point out the difference in
 exploitability between the different 'overwrite leaks'. It would be great to
@@ -114,7 +114,7 @@ st X,r17
     \end{subfigure} \hspace{15px}
  \begin{subfigure}[b]{0.45\textwidth} 
        \includegraphics[width=\textwidth]{{fig_pdf/reg_over_t_an.pdf}}
-        \caption{\scriptsize{Register overwrite, 1st-order t-test, 5k random vs. 5k fixed.}}
+        \caption{\scriptsize{Register overwrite, 1st-order t-test, $5000$ random vs. $5000$ fixed.}}
 \label{fig:reg_over_t}
     \end{subfigure}
 
@@ -122,12 +122,12 @@ st X,r17
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{{fig_pdf/memory_over_cpa.pdf}}
-        \caption{\scriptsize{Memory overwrite, 1st-order CPA, HW model, 65k traces.}}
+        \caption{\scriptsize{Memory overwrite, 1st-order CPA, HW model, $65000$ traces.}}
         \label{fig:mem_over_cpa}
     \end{subfigure} \hspace{15px}
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{{fig_pdf/memory_over_t_an.pdf}}
-        \caption{\scriptsize{Memory overwrite, 1st order t-test, 50k random vs. 50k fixed.}}
+        \caption{\scriptsize{Memory overwrite, 1st order t-test, $50000$ random vs. $50000$ fixed.}}
  \label{fig:mem_over_t}
     \end{subfigure}
     \caption{Register/memory-based overwrite effects}\label{fig:mem}
@@ -218,12 +218,12 @@ ld r20, X
 
 \begin{subfigure}[b]{0.45\textwidth}
     \includegraphics[width=\textwidth]{{fig_pdf/clear_rem_cpa.pdf}}
-    \caption{\scriptsize{Clearing remnant effect,1st-order CPA, HW model, 100k traces.}}
+    \caption{\scriptsize{Clearing remnant effect,1st-order CPA, HW model, $10^{5}$ traces.}}
 	\label{fig:clear_rem_cpa}
 \end{subfigure}  \hspace{15px}
 \begin{subfigure}[b]{0.45\textwidth}
     \includegraphics[width=\textwidth]{{fig_pdf/clear_rem_t.pdf}}
-    \caption{\scriptsize{Clearing remnant effect, 1st-order t-test, 100k random vs. 100k fixed.}}
+    \caption{\scriptsize{Clearing remnant effect, 1st-order t-test, $10^{5}$ random vs. $10^{5}$ fixed.}}
 	\label{fig:clear_rem_t}
 \end{subfigure}
     \caption{Memory-based remnant effect}\label{fig:regleak}
@@ -306,13 +306,15 @@ mov r31, r31
         \caption{\scriptsize{Correlation $\rho(HW(x_0),traceset)$, \texttt{r3-r2}, 5k traces.}}
 \label{fig:corr32}
     \end{subfigure}
-
-   
-    \caption{Neighbour-based leakage effect}\label{fig:regleak}
+    \caption{Neighbour-based leakage effect}\label{fig:regleak_neighbour}
 \end{figure}
 
-As shown above, we use the same code from Listing~\ref{lst:combined_leakage}, but in the first time we put the sensitive variable $x$ into register \texttt{r2} (\emph{only} line~\ref{line:r2} should result in leakage).
-In the second time, we put the sensitive value into the register \texttt{r3} (\emph{only} line~\ref{line:r3} should leak). However, Figure~\ref{fig:regleak} shows that both register accesses leak.
+As shown above, we use the same code from Listing~\ref{lst:combined_leakage}, 
+but in the first time we put the sensitive variable $x$ into register 
+\texttt{r2} (\emph{only} line~\ref{line:r2} should result in leakage).
+In the second time, we put the sensitive value into the register 
+\texttt{r3} (\emph{only} line~\ref{line:r3} should leak). 
+However, Figure~\ref{fig:regleak_neighbour} shows that both register accesses leak.
 As a result, we have identified a pair of data storage units (\texttt{r2,r3}) that exhibit the neighbour leakage effect. Note that in this case the effect is symmetrical, i.e., \texttt{r2} triggers \texttt{r3} and vice-versa (Figures~\ref{fig:corr23} and~\ref{fig:corr32}). We also observed that the effect is persistent, i.e. the \texttt{mov} instructions will trigger the same behavior, even if performed later (not necessairly in order as in Listing~\ref{lst:combined_leakage}). We run the same experiment in order to identify all possible neighbour leakages in the register file (all pairs in set $\{$\texttt{r0,...,r31}$\}$). The results are available in the Appendix, matrix $R$. The issue mostly affects consecutive registers, although exceptions exist, e.g. register \texttt{r0}. We did not identify a similar effect in SRAM memory, yet our experiments were limited to a small region of cells. As a solution to the neighbour effect, the developer can opt to avoid storing shares in such registers. Alternatively, he can store all shares in SRAM, except for the ones currently in use. 
 \end{subsection}\\\\\\
 Summing up, we stress the following focal points regarding the ILA-breaching effects and their solutions:
