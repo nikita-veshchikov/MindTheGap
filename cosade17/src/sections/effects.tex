@@ -1,5 +1,42 @@
 \section{ILA-Breaching Effects}\label{sec:ila_effects}
 
+\todo[inline]{The authors study three effects on an 8-bit AVR microcontroller in detail, namely the overwrite effect, the memory remnant effect, and the neighbor leakage effect. While the experiments clearly confirm the potential threat of these effects to masked software implementation of symmetric ciphers, I miss in Section 3 a more in-depth discussion of what *exactly* causes these effects at the micro-architectural level. }
+
+\todo[inline]{What I like in this section is that the authors point out the difference in
+exploitability between the different 'overwrite leaks'. It would be great to
+point out in the introductory section of Section 3 up to which number of
+traces analysis was performed.
+
+Also, it would be interesting to mention how the authors went about to identify the
+different breaching options. Did they stipulate certain effects, than tested
+for it, or, did they look at the fvr test of a naive implementations and
+deduce all the effects from there. The overwrite and memory-remnant leaks are
+pretty straightforward, the neighbouring leakage effect is less obvious and can only come from experience. Otherwise it is quite hard to come up with (I don't think I have seen it mentioned in literature before, at least to the
+best of my knowledge). 
+
+Concerning the neighbouring leakage effect, I think it is a pity that the
+authors do not try to explain it. A conversation with a hardware
+engineer/designer could give some useful insights here as it is most likely
+related to the layout and addressing of items in the register file. It would
+be good to do some testing around this. }  
+
+\todo[inline]{Do the authors know what 'nop' translates to in the AVR? If it is effectively
+doing nothing, it is a good instruction, but if it would translate to 'mov r0,
+r0' it might not be the best instruction to use for testing this behavior.
+(I really have no idea, just throwing it out there).}
+
+\todo[inline]{Are these all ILA breaching effect for the AVR? Of the top of my head I would say there is at least 1 lacking here and I assume it should be obvious in the AVR (but again, don't have an AVR, so not entirely sure):
+
+Imagine x0 and x1 of the same share family being stored in r1 and r5
+respectively 
+
+eor r0, r1 //xor content of register r0 and register r1, store in r0
+and r4, r5 //and content of register r4 and r5, store in r4
+
+Although r1 and r5 aren't in SRAM, won't overwrite each other in a register,
+they will "overwrite" each other most likely on the way to the ALU. Did you
+see this effect?}
+
 In this section, we present three effects identified in the ATMega163 microcontroller that breach ILA and pose a hazard to any masking scheme's security. Analytically, the effects below demonstrate that independent computations \emph{do not} necessarily lead to independent leakages and thus, the order-reduction theorem can become applicable.
 
 Every effect (Sections~\ref{overwrite},~\ref{mem_remnant} and~\ref{combined_leakage}) is described as a standalone, assembly-based scenario that manipulates two 4-bit shares $x_0$, $x_1$ originating from the sensitive, key-dependent, 4-bit value $x$, such that $x=x_0 \oplus x_1$. The shares $x_0$, $x_1$ are always manipulated in a theoretically sound manner, adhering to the masking scheme's requirements, i.e. we never combine the shares directly (e.g. via an exclusive-or instruction \texttt{eor x0, x1}). 
@@ -17,7 +54,11 @@ Below, we address the most common situations in which overwriting arises during 
 The experiments are described in Listings~\ref{lst:register_overwrite} and~\ref{lst:memory_overwrite}.
 Their analysis follow in Figure~\ref{fig:mem}.
 
-We confirm that overwriting is indeed an ILA-breaching effect, manifesting both in registers and SRAM memory. Note that the exploitability of the effect varies according to the data storage unit: in ATMega163, register-based overwriting can be exploited with roughly 500 traces (\ref{fig:reg_over_cpa}), while memory-based requires at least 40k traces (\ref{fig:mem_over_cpa}). 
+We confirm that overwriting is indeed an ILA-breaching effect, manifesting both 
+in registers and SRAM memory. Note that the exploitability of the effect varies 
+according to the data storage unit: in ATMega163, register-based overwriting can 
+be exploited with roughly $500$ traces (\ref{fig:reg_over_cpa}), while memory-based 
+requires at least $40 \times 10^3$ traces\todo{Any explanation for this important difference?} (\ref{fig:mem_over_cpa}). 
 Preventing register and memory-based overwrites is straightforward: the corresponding register (or memory cell) needs to be cleared in advance. We confirm experimentally that this solution remains secure against a $<>$k random vs. $<>$k fixed, 1st-order t-test (see Appendix).
 
 %\begin{figure}[H]
@@ -73,7 +114,7 @@ st X,r17
     \end{subfigure} \hspace{15px}
  \begin{subfigure}[b]{0.45\textwidth} 
        \includegraphics[width=\textwidth]{{fig_pdf/reg_over_t_an.pdf}}
-        \caption{\scriptsize{Register overwrite, 1st-order t-test, 5k random vs. 5k fixed.}}
+        \caption{\scriptsize{Register overwrite, 1st-order t-test, $5000$ random vs. $5000$ fixed.}}
 \label{fig:reg_over_t}
     \end{subfigure}
 
@@ -81,12 +122,12 @@ st X,r17
       %(or a blank line to force the subfigure onto a new line)
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{{fig_pdf/memory_over_cpa.pdf}}
-        \caption{\scriptsize{Memory overwrite, 1st-order CPA, HW model, 65k traces.}}
+        \caption{\scriptsize{Memory overwrite, 1st-order CPA, HW model, $65000$ traces.}}
         \label{fig:mem_over_cpa}
     \end{subfigure} \hspace{15px}
     \begin{subfigure}[b]{0.45\textwidth}
         \includegraphics[width=\textwidth]{{fig_pdf/memory_over_t_an.pdf}}
-        \caption{\scriptsize{Memory overwrite, 1st order t-test, 50k random vs. 50k fixed.}}
+        \caption{\scriptsize{Memory overwrite, 1st order t-test, $50000$ random vs. $50000$ fixed.}}
  \label{fig:mem_over_t}
     \end{subfigure}
     \caption{Register/memory-based overwrite effects}\label{fig:mem}
@@ -177,12 +218,12 @@ ld r20, X
 
 \begin{subfigure}[b]{0.45\textwidth}
     \includegraphics[width=\textwidth]{{fig_pdf/clear_rem_cpa.pdf}}
-    \caption{\scriptsize{Clearing remnant effect,1st-order CPA, HW model, 100k traces.}}
+    \caption{\scriptsize{Clearing remnant effect,1st-order CPA, HW model, $10^{5}$ traces.}}
 	\label{fig:clear_rem_cpa}
 \end{subfigure}  \hspace{15px}
 \begin{subfigure}[b]{0.45\textwidth}
     \includegraphics[width=\textwidth]{{fig_pdf/clear_rem_t.pdf}}
-    \caption{\scriptsize{Clearing remnant effect, 1st-order t-test, 100k random vs. 100k fixed.}}
+    \caption{\scriptsize{Clearing remnant effect, 1st-order t-test, $10^{5}$ random vs. $10^{5}$ fixed.}}
 	\label{fig:clear_rem_t}
 \end{subfigure}
     \caption{Memory-based remnant effect}\label{fig:regleak}
@@ -192,7 +233,10 @@ ld r20, X
 We address the remnant scenario with two experiments. Listing~\ref{lst:remnant} demonstrates how two consecutive SRAM accesses \texttt{ld rA, SRAM\_x0}, followed by \texttt{ld rB, SRAM\_x1} produce the remnant effect. Second, in Listing~\ref{lst:clearing_remnant}, we show how clearing the register and accessing an unrelated SRAM address (\texttt{0x0085}) can remove the remnant. 
 
 As shown in Figures~\ref{fig:mem_rem_cpa} and~\ref{fig:mem_rem_t}, consecutive SRAM accesses can potentially lead to ILA violations. Exploiting (in a univariate manner) the memory remnant effect in ATMega163 needs less than 500 traces with our setup. Preventing the effect requires the clearing of the register and the insertion of a dummy SRAM access. Alternatively, the implementor could ensure that same-family shares are not accessed sequentially. Note also that the \texttt{st} instruction produces a similar effect.
+
 \begin{subsection}{Neighbour Leakage Effect}\label{combined_leakage}
+\todo{Could the authors provide some kind of rationale for neighbor effect? Where did the intuition for such an effect come from in the first place?}
+
 The neighbour leakage effect implies that accessing or processing the contents of a data storage unit will cause leakage in another unit as well. For example, assume that share $x_0$ is stored in register \texttt{rB} and share $x_1$ is being processed in register \texttt{rA}. Assume also that the registers \texttt{rA, rB} are subject to the neighbour leakage effect. Processing \texttt{rB} will produce a value-based leakage of $x_0$. At the same time, the neighbouring leakage effect will cause \texttt{rA} to leak the value of $x_1$, resulting in the combined leakage of both shares and the recovery of sensitive value $x$. The following two experiments (Listing~\ref{lst:combined_leakage}) verify the neighbour leakage effect between registers \texttt{r2, r3}, i.e. a share stored in \texttt{r2} leaks when manipulating \texttt{r3} and vice-versa. 
 
 %\begin{figure}[H]
@@ -238,13 +282,13 @@ The neighbour leakage effect implies that accessing or processing the contents o
 ; clear all registers
 ; sensitive 'x' is in the selected register (r2 OR r3)
 mov r0, r0
-nop ; x5
+nop ; 5 times
 mov r1, r1
-nop ; x5 
+nop ; 5 times 
 mov r2, r2 @\label{line:r2}@
-nop ; x5
+nop ; 5 times
 mov r3, r3 @\label{line:r3}@
-nop ; x5
+nop ; 5 times
 ...
 mov r31, r31 
 \end{lstlisting}
@@ -262,13 +306,15 @@ mov r31, r31
         \caption{\scriptsize{Correlation $\rho(HW(x_0),traceset)$, \texttt{r3-r2}, 5k traces.}}
 \label{fig:corr32}
     \end{subfigure}
-
-   
-    \caption{Neighbour-based leakage effect}\label{fig:regleak}
+    \caption{Neighbour-based leakage effect}\label{fig:regleak_neighbour}
 \end{figure}
 
-As shown above, we use the same code from Listing~\ref{lst:combined_leakage}, but in the first time we put the sensitive variable $x$ into register \texttt{r2} (\emph{only} line~\ref{line:r2} should result in leakage).
-In the second time, we put the sensitive value into the register \texttt{r3} (\emph{only} line~\ref{line:r3} should leak). However, Figure~\ref{fig:regleak} shows that both register accesses leak.
+As shown above, we use the same code from Listing~\ref{lst:combined_leakage}, 
+but in the first time we put the sensitive variable $x$ into register 
+\texttt{r2} (\emph{only} line~\ref{line:r2} should result in leakage).
+In the second time, we put the sensitive value into the register 
+\texttt{r3} (\emph{only} line~\ref{line:r3} should leak). 
+However, Figure~\ref{fig:regleak_neighbour} shows that both register accesses leak.
 As a result, we have identified a pair of data storage units (\texttt{r2,r3}) that exhibit the neighbour leakage effect. Note that in this case the effect is symmetrical, i.e., \texttt{r2} triggers \texttt{r3} and vice-versa (Figures~\ref{fig:corr23} and~\ref{fig:corr32}). We also observed that the effect is persistent, i.e. the \texttt{mov} instructions will trigger the same behavior, even if performed later (not necessairly in order as in Listing~\ref{lst:combined_leakage}). We run the same experiment in order to identify all possible neighbour leakages in the register file (all pairs in set $\{$\texttt{r0,...,r31}$\}$). The results are available in the Appendix, matrix $R$. The issue mostly affects consecutive registers, although exceptions exist, e.g. register \texttt{r0}. We did not identify a similar effect in SRAM memory, yet our experiments were limited to a small region of cells. As a solution to the neighbour effect, the developer can opt to avoid storing shares in such registers. Alternatively, he can store all shares in SRAM, except for the ones currently in use. 
 \end{subsection}\\\\\\
 Summing up, we stress the following focal points regarding the ILA-breaching effects and their solutions:
