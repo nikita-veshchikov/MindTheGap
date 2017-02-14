@@ -1,4 +1,14 @@
 \section{Hardened 1st-order Masked Sbox for RECTANGLE}\label{sec:rectangle}
+
+\todo[inline]{The authors state that there is no extra cost for the RNG because the order is
+not increased, how do you clear the registers? You just load unrelated values
+from memory? It would have been interesting to also implement a 2nd order
+version and compare the cost to just hardening. With just hardening you
+do a lot of useless instructions while a smaller extra overhead might give you
+a 2nd order implementation.  
+
+I am a bit on the fence whether or not to accept this paper. There is nothing really wrong in the paper, but it is also not very exciting. I would have been interesting if more focus was put on the methodology to achieve the results, like a good methodology to learn all the ILA breaching effects, rather than listing the ILA breaching effects and then writing a tool to fix an implementation. The part I liked the most about the paper was the mentioning of the neighbouring leak effect.}
+
 We have discussed the ILA-breaching effects in Section~\ref{sec:ila_effects} and integrated these observations in the ASCOLD tool,  described in Section~\ref{sec:tool}. The current Section builds up on these advances by putting forward a ``hardened", 1st-order masked, ISW-based RECTANGLE Sbox. The desired aim is to produce an assembly-based, lightweight Sbox implementation that is secure against 1st-order, univariate attacks, hence forcing the attacker to resort to 2nd-order and/or multivariate techniques. 
 
 Our implementation opts for a bitsliced~\cite{DBLP:conf/fse/DaemenGV93,DBLP:conf/fse/Biham97a} representation, due to both the bitsliced structure of RECTANGLE and to the $GF(2)$-oriented nature of the ISW countermeasure. We employ a bitslicing factor of 2, i.e. we exploit the 8-bit AVR architecture in order to process two 4-bit Sboxes in parallel (nibble-slicing). The Sbox is decomposed into $GF(2)$ operations which can be accelerated by via SIMD-like, 8-bit assembly instructions. The decomposition suggested by Zhang et al.~\cite{DBLP:journals/chinaf/ZhangBLR0V15} is optimal w.r.t. $GF(2)$ multiplicative complexity, since Grosso et al.~\cite{DBLP:conf/fse/GrossoLSV14} established that the minimum number of non-linear operations required by 4x4 Sboxes is 4. 

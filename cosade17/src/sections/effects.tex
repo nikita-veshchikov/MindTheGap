@@ -1,5 +1,40 @@
 \section{ILA-Breaching Effects}\label{sec:ila_effects}
 
+\todo[inline]{What I like in this section is that the authors point out the difference in
+exploitability between the different 'overwrite leaks'. It would be great to
+point out in the introductory section of Section 3 up to which number of
+traces analysis was performed.
+
+Also, it would be interesting to mention how the authors went about to identify the
+different breaching options. Did they stipulate certain effects, than tested
+for it, or, did they look at the fvr test of a naive implementations and
+deduce all the effects from there. The overwrite and memory-remnant leaks are
+pretty straightforward, the neighbouring leakage effect is less obvious and can only come from experience. Otherwise it is quite hard to come up with (I don't think I have seen it mentioned in literature before, at least to the
+best of my knowledge). 
+
+Concerning the neighbouring leakage effect, I think it is a pity that the
+authors do not try to explain it. A conversation with a hardware
+engineer/designer could give some useful insights here as it is most likely
+related to the layout and addressing of items in the register file. It would
+be good to do some testing around this. }  
+
+\todo[inline]{Do the authors know what 'nop' translates to in the AVR? If it is effectively
+doing nothing, it is a good instruction, but if it would translate to 'mov r0,
+r0' it might not be the best instruction to use for testing this behavior.
+(I really have no idea, just throwing it out there).}
+
+\todo[inline]{Are these all ILA breaching effect for the AVR? Of the top of my head I would say there is at least 1 lacking here and I assume it should be obvious in the AVR (but again, don't have an AVR, so not entirely sure):
+
+Imagine x0 and x1 of the same share family being stored in r1 and r5
+respectively 
+
+eor r0, r1 //xor content of register r0 and register r1, store in r0
+and r4, r5 //and content of register r4 and r5, store in r4
+
+Although r1 and r5 aren't in SRAM, won't overwrite each other in a register,
+they will "overwrite" each other most likely on the way to the ALU. Did you
+see this effect?}
+
 In this section, we present three effects identified in the ATMega163 microcontroller that breach ILA and pose a hazard to any masking scheme's security. Analytically, the effects below demonstrate that independent computations \emph{do not} necessarily lead to independent leakages and thus, the order-reduction theorem can become applicable.
 
 Every effect (Sections~\ref{overwrite},~\ref{mem_remnant} and~\ref{combined_leakage}) is described as a standalone, assembly-based scenario that manipulates two 4-bit shares $x_0$, $x_1$ originating from the sensitive, key-dependent, 4-bit value $x$, such that $x=x_0 \oplus x_1$. The shares $x_0$, $x_1$ are always manipulated in a theoretically sound manner, adhering to the masking scheme's requirements, i.e. we never combine the shares directly (e.g. via an exclusive-or instruction \texttt{eor x0, x1}). 

@@ -1,5 +1,14 @@
 \section{Leakage Detection Tool}\label{sec:tool}
 
+\todo[inline]{While I do believe this tool could be of help with simple processors where
+the leakage behavior and (micro-)architecture is easy to predict, I am a bit skeptic about the
+usefulness of this all when it comes to larger processors (including
+pipelining, out-of-order execution, etc.) 
+Do you think it is feasible to get to a point where the tool would be able to
+handle all leakages (even for advanced processors?). Do you think the
+development of this tool could have added value for dealing with larger
+processors?}
+
 Several tools that can help designers of cryptographic systems
 were already suggested and discussed in literature.
 
@@ -43,7 +52,7 @@ website\footnote{\url{https://github.com/nikita-veshchikov/ascold}}.
 ASCOLD uses assembly code as its input in order to run a simulation while checking for potential
 issues that can cause side-channel information leakage.
 The tool is compatible only with assembly code 
-(which can be used as is durring the development or extracted from the compiled binary file). 
+(which can be used as is during the development or extracted from the compiled binary file). 
 Thus it is possible to be sure that the executed code will be exactly the same as the code
 which is analyzed. Otherwise, it becomes impossible to provide any guarantees
 on the quality of the analysis, i.e. be sure that no additional issues are introduced during compilation.
