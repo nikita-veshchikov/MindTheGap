@@ -1,9 +1,51 @@
 \section{Hardened 1st-order Masked Sbox for RECTANGLE}\label{sec:rectangle}
-We have discussed the ILA-breaching effects in Section~\ref{sec:ila_effects} and integrated these observations in the ASCOLD tool,  described in Section~\ref{sec:tool}. The current Section builds up on these advances by putting forward a ``hardened", 1st-order masked, ISW-based RECTANGLE Sbox. The desired aim is to produce an assembly-based, lightweight Sbox implementation that is secure against 1st-order, univariate attacks, hence forcing the attacker to resort to 2nd-order and/or multivariate techniques. 
 
-Our implementation opts for a bitsliced~\cite{DBLP:conf/fse/DaemenGV93,DBLP:conf/fse/Biham97a} representation, due to both the bitsliced structure of RECTANGLE and to the $GF(2)$-oriented nature of the ISW countermeasure. We employ a bitslicing factor of 2, i.e. we exploit the 8-bit AVR architecture in order to process two 4-bit Sboxes in parallel (nibble-slicing). The Sbox is decomposed into $GF(2)$ operations which can be accelerated by via SIMD-like, 8-bit assembly instructions. The decomposition suggested by Zhang et al.~\cite{DBLP:journals/chinaf/ZhangBLR0V15} is optimal w.r.t. $GF(2)$ multiplicative complexity, since Grosso et al.~\cite{DBLP:conf/fse/GrossoLSV14} established that the minimum number of non-linear operations required by 4x4 Sboxes is 4. 
+\todo[inline]{The authors state that there is no extra cost for the RNG because the order is
+not increased, how do you clear the registers? You just load unrelated values
+from memory? It would have been interesting to also implement a 2nd order
+version and compare the cost to just hardening. With just hardening you
+do a lot of useless instructions while a smaller extra overhead might give you
+a 2nd order implementation.  
 
-In order to ``harden" the Sbox, we use the solutions suggested in Section~\ref{sec:ila_effects} and follow two approaches: efficient and conservative. In the \emph{efficient} approach, after processing any share, we clear the registers on a need-to basis and insert dummy \texttt{ld} instructions to avoid overwrite and remnant effects. We avoid neighbouring leakage effects by always storing the shares in SRAM, i.e. the register file contains only the shares used by the current instruction. In the \emph{conservative} approach, we perform all the afore-mentioned clearing techniques. In addition, we insert dummy \texttt{st} instructions and perform thorough register/memory clearing. Both efficient and conservative approaches are applied to every single instruction of the implementation, i.e. the cost is linear w.r.t. the number of instructions that manipulate masked shares. The resulting computational overhead is significant: the efficient ``hardened" Sbox implementation runs in 993 clock cycles, i.e. almost 12 times slower compared to the ``naive" 1st-order, ISW-based RECTANGLE Sbox, which runs in $87$ clock cycles. The conservative ``hardened" Sbox implementation requires 1319 clock cycles, i.e. it is 15 times slower. Table~\ref{cc_table} contains a comparison between ``naive" 1st-order, ``naive" 2nd-order and efficient/conservative ``hardened" 1st-order bitsliced implementations of the RECTANGLE Sbox in AVR assembly.
+I am a bit on the fence whether or not to accept this paper. There is nothing really wrong in the paper, but it is also not very exciting. I would have been interesting if more focus was put on the methodology to achieve the results, like a good methodology to learn all the ILA breaching effects, rather than listing the ILA breaching effects and then writing a tool to fix an implementation. The part I liked the most about the paper was the mentioning of the neighbouring leak effect.}
+
+We have discussed the ILA-breaching effects in Section~\ref{sec:ila_effects} 
+and integrated these observations in the ASCOLD tool, described in Section~\ref{sec:tool}. 
+The current Section builds up on these advances by putting forward a ``hardened", 
+1st-order masked, ISW-based RECTANGLE Sbox. The desired aim is to produce an assembly-based, 
+lightweight Sbox implementation that is secure against 1st-order, univariate attacks, 
+hence forcing the attacker to resort to 2nd-order and/or multivariate techniques\todo{Is this goal reached? Note that reaching this goal means being exhaustive on all the possible distance-based leakages that could occur which does not seem to be the case here (otherwise should be demonstrated).}. 
+
+Our implementation opts for a bitsliced~\cite{DBLP:conf/fse/DaemenGV93,DBLP:conf/fse/Biham97a} representation, 
+due to both the bitsliced structure of RECTANGLE and to the $GF(2)$-oriented 
+nature of the ISW countermeasure. We employ a bitslicing factor of 2, 
+i.e. we exploit the 8-bit AVR architecture in order to process two 4-bit Sboxes 
+in parallel (nibble-slicing). The Sbox is decomposed into $GF(2)$ operations which 
+can be accelerated by via SIMD-like, 8-bit assembly instructions. 
+The decomposition suggested by Zhang et al.~\cite{DBLP:journals/chinaf/ZhangBLR0V15} 
+is optimal w.r.t. $GF(2)$ multiplicative complexity, 
+since Grosso et al.~\cite{DBLP:conf/fse/GrossoLSV14} established that the minimum 
+number of non-linear operations required by $4 \times 4$ Sboxes is $4$. 
+
+In order to ``harden" the Sbox, we use the solutions suggested in Section~\ref{sec:ila_effects} 
+and follow two approaches: efficient and conservative. 
+In the \emph{efficient} approach, after processing any share, 
+we clear the registers on a need-to basis and insert dummy \texttt{ld} instructions 
+to avoid overwrite and remnant effects. We avoid neighbouring leakage effects by always 
+storing the shares in SRAM, i.e. the register file contains only the shares used by 
+the current instruction. In the \emph{conservative} approach, we perform all the 
+afore-mentioned clearing techniques. In addition, we insert dummy \texttt{st} 
+instructions and perform thorough register/memory clearing. Both efficient and 
+conservative approaches are applied to every single instruction of the implementation, 
+i.e. the cost is linear w.r.t. the number of instructions that manipulate masked shares. 
+The resulting computational overhead is significant: the efficient ``hardened" 
+Sbox implementation runs in 993 clock cycles, i.e. almost 12 times slower compared 
+to the ``naive" 1st-order, ISW-based RECTANGLE Sbox, which runs in $87$ clock cycles. 
+The conservative ``hardened" Sbox implementation requires $1319$ clock cycles, i.e. it 
+is 15 times slower\todo{What does explain the huge observed factor in the hardened implementations (between 12 and 15 times)?}. Table~\ref{cc_table} contains a comparison between ``naive" 1st-order, 
+``naive" 2nd-order and efficient/conservative ``hardened" 1st-order bitsliced implementations 
+of the RECTANGLE Sbox in AVR assembly.
+
 \begin{table}[H]
 \centering
 \caption{Masked Sbox comparison in ATMega163}
@@ -20,32 +62,37 @@ Unprotected  & no & 32 & 250 & 0 \\ \hline
 \end{tabular}
 \end{table}
 
-Using the 1st-order, random vs. fixed t-test, we evaluate the efficient and conservative ``hardened" 1st-order Sboxes, as well as the ``naive" 1st-order Sbox. Using a $25$k random vs. $25$k fixed t-test does not yield any statistically significant leakage in the efficient ``hardened" version (Figure~\ref{hardbox_eff}). However, wenote that a $50$k random vs. $50$k fixed t-test is able to detect leakage, i.e. trying to reduce the cost of enforcing ILA can have a detrimental effect on security. For the conservative ``hardened" Sbox, a 100k random vs. 100k fixed t-test does not detect any leakage (Figure~\ref{hardbox_cons}). Note that a \emph{2nd-order} $25$k random vs. $25$k fixed t-test on a chosen sample window is able to detect leakage. Therefore, we conclude that for the given device, the informativeness of 1st-order attacks is substantially limited and a 2nd-order attack is the preferable adversarial strategy (Figure~\ref{t_order2}). Naturally, the ``naive" 1st-order version rejects the null hypothesis (Figure~\ref{softbox}) due to the ILA-breaching effects and the 1st-order leakage can be easily exploited.
+\todo[inline]{
+Table 1 suggests that the proposed approach is not interesting compared to the simple approach of implementing a 2nd-order masking to ensure 1st-order security. Indeed the 2nd-order implementation is faster and it is also provably secure against 1st-order leakage assuming distance-based leakage whereas the proposed approach is only empirically secure: some undetected 1st-order leakage could actually occur.
+
+Nikita: we can point out the fact that e.g. we need less randomness}
+
+Using the 1st-order, random vs. fixed t-test, we evaluate the efficient and conservative ``hardened" 1st-order Sboxes, as well as the ``naive" 1st-order Sbox. Using a $25000$ random vs. $25000$ fixed t-test does not yield any statistically significant leakage in the efficient ``hardened" version (Figure~\ref{hardbox_eff}). However, wenote that a $50000$ random vs. $50000$ fixed t-test is able to detect leakage, i.e. trying to reduce the cost of enforcing ILA can have a detrimental effect on security. For the conservative ``hardened" Sbox, a $10^{5}$ random vs. $10^{5}$ fixed t-test does not detect any leakage (Figure~\ref{hardbox_cons}). Note that a \emph{2nd-order} $25000$ random vs. $25000$ fixed t-test on a chosen sample window is able to detect leakage. Therefore, we conclude that for the given device, the informativeness of 1st-order attacks is substantially limited and a 2nd-order attack is the preferable adversarial strategy (Figure~\ref{t_order2}). Naturally, the ``naive" 1st-order version rejects the null hypothesis (Figure~\ref{softbox}) due to the ILA-breaching effects and the 1st-order leakage can be easily exploited.
 \begin{figure}[H]
 \centering
  \begin{subfigure}[b]{0.47\textwidth}
         \includegraphics[width=\textwidth]{{fig_pdf/hardbox_eff.pdf}}
 
-        \caption{\scriptsize{Efficient hardened Sbox, 1st-order t-test, 25k random vs. 25k fixed.}}
+        \caption{\scriptsize{Efficient hardened Sbox, 1st-order t-test, $25000$ random vs. $25000$ fixed.}}
 \label{hardbox_eff}
     \end{subfigure}  \hspace{15px}
  \begin{subfigure}[b]{0.47\textwidth}
         \includegraphics[width=\textwidth]{{fig_pdf/hardbox_cons.pdf}}
 
-        \caption{\scriptsize{Conservative hardened Sbox, 1st-order t-test, 100k random vs. 100k fixed.}}
+        \caption{\scriptsize{Conservative hardened Sbox, 1st-order t-test, $10^{5}$ random vs. $10^{5}$ fixed.}}
 \label{hardbox_cons}
     \end{subfigure}
 
 \begin{subfigure}[b]{0.47\textwidth}
         \includegraphics[width=\textwidth]{{fig_pdf/t_order2.pdf}}
 
-        \caption{\scriptsize{Consevative hardened Sbox, 2nd-order t-test, 25k random vs. 25k fixed.}}
+        \caption{\scriptsize{Consevative hardened Sbox, 2nd-order t-test, $25000$ random vs. $25000$ fixed.}}
 \label{t_order2}
     \end{subfigure} \hspace{15px}
  \begin{subfigure}[b]{0.47\textwidth}
         \includegraphics[width=\textwidth]{{fig_pdf/softbox.pdf}}
 
-        \caption{\scriptsize{Naive Sbox, 1st-order t-test, 1k random vs. 1k fixed.}}
+        \caption{\scriptsize{Naive Sbox, 1st-order t-test, $1000$ random vs. $1000$ fixed.}}
 \label{softbox}
     \end{subfigure}
 

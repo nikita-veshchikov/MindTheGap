@@ -26,7 +26,7 @@
 \documentclass[runningheads, a4paper, 10pt]{llncs}
 
 %\smartqed  % flush right qed marks, e.g. at end of proof
-%
+
 \usepackage{graphicx}
 \usepackage{caption}
 \usepackage{subcaption}
@@ -96,7 +96,8 @@
 %
 % Insert the name of "your journal" with
 % \journalname{myjournal}
-%
+
+
 \begin{document}
 \bibliographystyle{plain}
 
@@ -128,6 +129,10 @@ physical effects such as glitches and distance-based leakages, which violate the
 \keywords{Masking, AVR, verification tool, simulator, independent leakage assumption, distance-based leakage, RECTANGLE, SCA }
 
 \end{abstract}
+
+\todo[inline]{Pro: I believe this kind of practical work is useful and the considered issue is worth investigating. Moreover, the provided experimental results give some insights on the distance-based leakage issue and possible ways to avoid it.
+
+Cons: The analysis is not very deepened. The observed effects are well known, expect maybe the neighbor effect but no explanation of this effect is provided. The description of the detection tool is so high-level that it is of no real interest to the reader.}
 
 \input{sections/introduction.tex}
 \input{sections/background.tex}

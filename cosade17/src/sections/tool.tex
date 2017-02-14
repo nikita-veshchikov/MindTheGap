@@ -1,7 +1,24 @@
 \section{Leakage Detection Tool}\label{sec:tool}
 
+\todo[inline]{While I do believe this tool could be of help with simple processors where
+the leakage behavior and (micro-)architecture is easy to predict, I am a bit skeptic about the
+usefulness of this all when it comes to larger processors (including
+pipelining, out-of-order execution, etc.) 
+Do you think it is feasible to get to a point where the tool would be able to
+handle all leakages (even for advanced processors?). Do you think the
+development of this tool could have added value for dealing with larger
+processors?}
+
 Several tools that can help designers of cryptographic systems
-were already suggested and discussed in literature.
+were already suggested and discussed in literature.\todo{add~\cite{DBLP:conf/ches/MossOPT12}}
+
+\todo[inline]{The description of the tool ASCOLD is very high-level. The reader gets no clue on how the tool actually works. 
+
+For instance: 
+`` specifically we check whether we combine different shares of the same family without randomizing beforehand.''
+``Analytically, we verify whether the previously stored value and the new value cause the overwrite effect 3.1.''
+
+What does it mean exactly? The shares cannot be combined in any way? What is the exact criterion to detect a leakage? The authors should describe precisely how the detection algorithm works from an input sequence of instructions.}
 
 SILK\footnote{\url{http://www.ulb.ac.be/di/dpalab/download/SILK_v0.1.zip}} 
 presented in 2014~\cite{DBLP:conf/acsac/Veshchikov14}
@@ -43,7 +60,7 @@ website\footnote{\url{https://github.com/nikita-veshchikov/ascold}}.
 ASCOLD uses assembly code as its input in order to run a simulation while checking for potential
 issues that can cause side-channel information leakage.
 The tool is compatible only with assembly code 
-(which can be used as is durring the development or extracted from the compiled binary file). 
+(which can be used as is during the development or extracted from the compiled binary file). 
 Thus it is possible to be sure that the executed code will be exactly the same as the code
 which is analyzed. Otherwise, it becomes impossible to provide any guarantees
 on the quality of the analysis, i.e. be sure that no additional issues are introduced during compilation.
