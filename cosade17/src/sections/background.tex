@@ -16,7 +16,12 @@ In parallel with the development of masked implementations, side-channel researc
 \noindent\textbf{Order-reduction theorem} A $d$th-order secure masking scheme under value-based leakages is $\lfloor \frac{d}{2} \rfloor$th-order secure under distance-based leakages.
 \vspace{0.15cm}
 
-The order-reduction theorem has been verified experimentally by Balasch et al.~\cite{DBLP:conf/cardis/BalaschGGRS14} for orders $d=1,2$ in AVR-based and 8051-based devices. De Groot et al.~\cite{DBLP:journals/iacr/GrootPPSB16} have verified experimentally the theorem for orders $d=1,2$ in the ARM Cortex-M4.
+The order-reduction theorem has been verified experimentally by 
+Balasch et al.~\cite{DBLP:conf/cardis/BalaschGGRS14} 
+for orders $d=1,2$ in AVR-based and 8051-based devices. 
+De Groot et al.~\cite{DBLP:journals/iacr/GrootPPSB16} have verified experimentally 
+the theorem for orders $d=1,2$ in the ARM Cortex-M4.
+\todo[inline]{``The order-reduction theorem has been verified experimentally'' I guess the distance-based leakage assumption has been verified experimentally. The theorem itself (distance-based leakage + security at order d => security at order d/2) does not need any experimental verification; it is simply true (that is actually what makes it a theorem and not a conjecture).}
 
 \subsection{Experimental Setup \& Evaluation}
 The implementation and SCA evaluation is performed on a smartcard equipped with an 8-bit, AVR-based ATMega163 microcontroller\footnote{\url{http://www.atmel.com/images/doc1142.pdf}}. 
@@ -35,6 +40,12 @@ H_{alt}: \;\; \mu_{fixed} \neq \mu_{random}
 w = \frac {\mu_{fixed} - \mu_{random}} {\sqrt{ \frac{\sigma_{fixed}^2}{n} + \frac{\sigma_{random}^2}   {m}  }  } \qquad \upsilon = \frac { (\frac{\sigma_{fixed}^2} {n}   + \frac{\sigma_{random}^2} {m}) ^2  } {\frac{\sigma_{fixed}^4} {n^2(n-1)} + \frac{\sigma_{random}^4} {m^2(m-1)}  }
 \end{equation}
 
+
+\todo[inline]{The described leakage detection test –Equations (2) and (3)– is unsound. It may happen that for some fixed plaintext value, one gets $\mu_{fixed} = \mu_{random}$ whereas a first-order leakage occurs. 
+
+For instance, if a leakage point depends on the Hamming weight of a manipulated n-bit variable X, a fixed plaintext leading to HW(X)=n/2 implies a mean $\mu_{fixed}$ equal to $\mu_{random}$. And yet a first-order leakage definitely occurs at this point. 
+
+Detecting a first-order leakage on some variable X means detecting whether E[Leak|X=x] depends on x. What is done here is detecting whether E[Leak|X=x0] is different from E[L(X)|X uniform] for some fixed value x0, which is clearly insufficient.}
 
 Parameters $\mu_{x}$ and $\sigma_{x}^2$ are the estimated mean and variance of set $x$; 
 $n$ and $m$ denote sizes of sets $S_{fixed}$ and $S_{random}$ respectively. The null hypothesis $H_{null}$ is rejected at a given level of significance $\alpha$ (often set to $0.99999$), if $\lvert w \lvert >  t_{\alpha/2,\upsilon}  $, where $t_{\alpha/2,\upsilon}$ is the value of the Student t distribution with $\upsilon$ degrees of freedom. In the evaluation context, rejecting $H_{null}$ implies leakage detection, i.e. potential evidence of an ineffective masking scheme.

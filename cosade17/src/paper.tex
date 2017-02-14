@@ -129,52 +129,9 @@ physical effects such as glitches and distance-based leakages, which violate the
 
 \end{abstract}
 
-\todo[inline]{This paper addresses the issue of turning a 1st-order masking scheme into a secure implementation on a device prone to distance-based leakage which may induce a 1st-order flaw. 
+\todo[inline]{Pro: I believe this kind of practical work is useful and the considered issue is worth investigating. Moreover, the provided experimental results give some insights on the distance-based leakage issue and possible ways to avoid it.
 
-The authors first present some experimental results that exhibit different sequences of instructions leading to distance-based leakages. Specifically they characterize three kinds of effects: the “overwrite effect” (distance between the former and new value in a mov instruction), the “memory remnant effect” (distance between two successive values on the memory bus), and the “neighbor leakage effect” (distance between the content of two “close” registers). Then the authors discuss some existing leakage detection tools, and they give a high-level description of a tool they have developed and which aims to detect 1st-order leakages at the assembly level. Finally, they describe a hardened masked implementation of the RECTANGLE s-box which includes some security measures to avoid the observed distance-based leakage effects.
-
-Pro: I believe this kind of practical work is useful and the considered issue is worth investigating. Moreover, the provided experimental results give some insights on the distance-based leakage issue and possible ways to avoid it.
-
-Cons: The analysis is not very deepened. The observed effects are well known, expect maybe the neighbor effect but no explanation of this effect is provided. The description of the detection tool is so high-level that it is of no real interest to the reader.
-
-Technical remarks:
-
-* “The order-reduction theorem has been verified experimentally…” I guess the distance-based leakage assumption has been verified experimentally. The theorem itself (distance-based leakage + security at order d => security at order d/2) does not need any experimental verification; it is simply true (that is actually what makes it a theorem and not a conjecture).
-
-* The described leakage detection test –Equations (2) and (3)– is unsound. It may happen that for some fixed plaintext value, one gets $\mu_{fixed} = \mu_{random}$ whereas a first-order leakage occurs. 
-
-For instance, if a leakage point depends on the Hamming weight of a manipulated n-bit variable X, a fixed plaintext leading to HW(X)=n/2 implies a mean $\mu_{fixed}$ equal to $\mu_{random}$. And yet a first-order leakage definitely occurs at this point. 
-
-Detecting a first-order leakage on some variable X means detecting whether E[Leak|X=x] depends on x. What is done here is detecting whether E[Leak|X=x0] is different from E[L(X)|X uniform] for some fixed value x0, which is clearly insufficient.
-
-* “in ATMega163, register-based overwriting can be exploited with roughly 500 traces (1a), while memory-based requires at least 40k traces (1c)” Any explanation for this important difference?
-
-* Could the authors provide some kind of rationale for neighbor effect? Where did the intuition for such an effect come from in the first place?
-
-* At the beginning of Section 4, the authors could also mention the following work: 
-
-[MOPT12] Moss, Oswald, Page, Tunstall. Compiler Assisted Masking. CHES 2012.
-
-* The description of the tool ASCOLD is very high-level. The reader gets no clue on how the tool actually works. 
-
-For instance: 
-“… specifically we check whether we combine different shares of the same family without randomizing beforehand.”
-“Analytically, we verify whether the previously stored value and the new value cause the overwrite effect 3.1.”
-
-What does it mean exactly? The shares cannot be combined in any way? What is the exact criterion to detect a leakage? The authors should describe precisely how the detection algorithm works from an input sequence of instructions.
-
-* “The desired aim is to produce an assembly-based, lightweight Sbox implementation that is secure against 1st-order, univariate attacks, hence forcing the attacker to resort to 2nd-order and/or multivariate techniques.” Is this goal reached? Note that reaching this goal means being exhaustive on all the possible distance-based leakages that could occur which does not seem to be the case here (otherwise should be demonstrated).
-
-* What does explain the huge observed factor in the hardened implementations (between 12 and 15 times)?
-
-* Table 1 suggests that the proposed approach is not interesting compared to the simple approach of implementing a 2nd-order masking to ensure 1st-order security. Indeed the 2nd-order implementation is faster and it is also provably secure against 1st-order leakage assuming distance-based leakage whereas the proposed approach is only empirically secure: some undetected 1st-order leakage could actually occur.
-
-
-Editorial:
-
-* Listing 1.5: What does the comment “x5” mean?
-* Section 4.1: “durring"
-}
+Cons: The analysis is not very deepened. The observed effects are well known, expect maybe the neighbor effect but no explanation of this effect is provided. The description of the detection tool is so high-level that it is of no real interest to the reader.}
 
 \todo[inline]{The paper provides three contributions. First, the authors conducted a number of experiments to confirm the real-world threat of violations of the Independent Leakage Assumption (ILA) when higher-order masking is implemented in software. These experiments show that it can be difficult in practice to process shares separately and independently so that there is no joint leakage that could result in a reduction of the actual order of the masking scheme. The authors study three effects on an 8-bit AVR microcontroller in detail, namely the overwrite effect, the memory remnant effect, and the neighbor leakage effect. While the experiments clearly confirm the potential threat of these effects to masked software implementation of symmetric ciphers, I miss in Section 3 a more in-depth discussion of what *exactly* causes these effects at the micro-architectural level. The second contribution is a leakage detection tool called ASCOLD. This tools gets as input an AVR Assembler implement!
  ation of a masked cipher and checks it for potential issues that can cause the leakage of sensitive information through the three effects mentioned above. The authors intend to make this tool publicly available, which is something I highly appreciate. ASCOLD is, to my knowledge, the first tool that analyzes Assembler implementations of masked ciphers for potential vulnerabilities and may be useful for practioneers. The third contribution is a 1st order masked Sbox implementation for RECTANGLE hardened using the ASCOLD tool. The results in Section 5 clearly demonstrate that a naive implementation of masking in software is not insufficient to reach the desired protection level. Concretely, results show that the naive masking implementation is 12 times slower than an unprotected implementation, while a hardened masking implementation is 15 times slower. In summary, I do not see a really striking research contribution (since most of the results are not really new or surprising)!

@@ -10,7 +10,16 @@ development of this tool could have added value for dealing with larger
 processors?}
 
 Several tools that can help designers of cryptographic systems
-were already suggested and discussed in literature.
+were already suggested and discussed in literature.\todo{add:
+[MOPT12] Moss, Oswald, Page, Tunstall. Compiler Assisted Masking. CHES 2012.}
+
+\todo[inline]{The description of the tool ASCOLD is very high-level. The reader gets no clue on how the tool actually works. 
+
+For instance: 
+`` specifically we check whether we combine different shares of the same family without randomizing beforehand.''
+``Analytically, we verify whether the previously stored value and the new value cause the overwrite effect 3.1.''
+
+What does it mean exactly? The shares cannot be combined in any way? What is the exact criterion to detect a leakage? The authors should describe precisely how the detection algorithm works from an input sequence of instructions.}
 
 SILK\footnote{\url{http://www.ulb.ac.be/di/dpalab/download/SILK_v0.1.zip}} 
 presented in 2014~\cite{DBLP:conf/acsac/Veshchikov14}
