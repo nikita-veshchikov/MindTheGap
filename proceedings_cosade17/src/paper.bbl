@@ -1,0 +1,300 @@
+\begin{thebibliography}{10}
+
+\bibitem{aes_atmega}
+Rijndaelfast implementation on atmel avr.
+\newblock \url{http://point-at-infinity.org/avraes/}.
+
+\bibitem{DBLP:conf/cardis/BalaschGGRS14}
+Josep Balasch, Benedikt Gierlichs, Vincent Grosso, Oscar Reparaz, and
+  Fran{\c{c}}ois{-}Xavier Standaert.
+\newblock On the cost of lazy engineering for masked software implementations.
+\newblock In Marc Joye and Amir Moradi, editors, {\em Smart Card Research and
+  Advanced Applications - 13th International Conference, {CARDIS} 2014, Paris,
+  France, November 5-7, 2014. Revised Selected Papers}, volume 8968 of {\em
+  Lecture Notes in Computer Science}, pages 64--81. Springer, 2014.
+
+\bibitem{drbg}
+Elaine Barker and John Kelsey.
+\newblock Recommendation for random number generation using deterministic
+  random bit generators.
+\newblock
+  \url{http://csrc.nist.gov/publications/nistpubs/800-90A/SP800-90A.pdf}.
+
+\bibitem{DBLP:conf/eurocrypt/BartheBDFGS15}
+Gilles Barthe, Sonia Bela{\"{\i}}d, Fran{\c{c}}ois Dupressoir, Pierre{-}Alain
+  Fouque, Benjamin Gr{\'{e}}goire, and Pierre{-}Yves Strub.
+\newblock Verified proofs of higher-order masking.
+\newblock In Elisabeth Oswald and Marc Fischlin, editors, {\em Advances in
+  Cryptology - {EUROCRYPT} 2015 - 34th Annual International Conference on the
+  Theory and Applications of Cryptographic Techniques, Sofia, Bulgaria, April
+  26-30, 2015, Proceedings, Part {I}}, volume 9056 of {\em Lecture Notes in
+  Computer Science}, pages 457--485. Springer, 2015.
+
+\bibitem{DBLP:journals/joc/BatinaGPRSV11}
+Lejla Batina, Benedikt Gierlichs, Emmanuel Prouff, Matthieu Rivain,
+  Fran{\c{c}}ois{-}Xavier Standaert, and Nicolas Veyrat{-}Charvillon.
+\newblock Mutual information analysis: a comprehensive study.
+\newblock {\em J. Cryptology}, 24(2):269--291, 2011.
+
+\bibitem{DBLP:conf/ches/BattistelloCPZ16}
+Alberto Battistello, Jean{-}S{\'{e}}bastien Coron, Emmanuel Prouff, and Rina
+  Zeitoun.
+\newblock Horizontal side-channel attacks and countermeasures on the {ISW}
+  masking scheme.
+\newblock In Benedikt Gierlichs and Axel~Y. Poschmann, editors, {\em
+  Cryptographic Hardware and Embedded Systems - {CHES} 2016 - 18th
+  International Conference, Santa Barbara, CA, USA, August 17-19, 2016,
+  Proceedings}, volume 9813 of {\em Lecture Notes in Computer Science}, pages
+  23--39. Springer, 2016.
+
+\bibitem{DBLP:conf/fse/Biham97a}
+Eli Biham.
+\newblock A fast new {DES} implementation in software.
+\newblock In Eli Biham, editor, {\em Fast Software Encryption, 4th
+  International Workshop, {FSE} '97, Haifa, Israel, January 20-22, 1997,
+  Proceedings}, volume 1267 of {\em Lecture Notes in Computer Science}, pages
+  260--272. Springer, 1997.
+
+\bibitem{DBLP:journals/iacr/BottinelliB15}
+Paul Bottinelli and Joppe~W. Bos.
+\newblock Computational aspects of correlation power analysis.
+\newblock {\em {IACR} Cryptology ePrint Archive}, 2015:260, 2015.
+
+\bibitem{DBLP:conf/ches/BrierCO04}
+Eric Brier, Christophe Clavier, and Francis Olivier.
+\newblock Correlation power analysis with a leakage model.
+\newblock In Marc Joye and Jean{-}Jacques Quisquater, editors, {\em
+  Cryptographic Hardware and Embedded Systems - {CHES} 2004: 6th International
+  Workshop Cambridge, MA, USA, August 11-13, 2004. Proceedings}, volume 3156 of
+  {\em Lecture Notes in Computer Science}, pages 16--29. Springer, 2004.
+
+\bibitem{DBLP:journals/iacr/CanrightB09}
+D.~Canright and Lejla Batina.
+\newblock A very compact "perfectly masked" s-box for {AES} (corrected).
+\newblock {\em {IACR} Cryptology ePrint Archive}, 2009:11, 2009.
+
+\bibitem{DBLP:conf/crypto/ChariJRR99}
+Suresh Chari, Charanjit~S. Jutla, Josyula~R. Rao, and Pankaj Rohatgi.
+\newblock Towards sound approaches to counteract power-analysis attacks.
+\newblock In Wiener \cite{DBLP:conf/crypto/1999}, pages 398--412.
+
+\bibitem{tvla}
+Jeremy Cooper, Elke DeMulder, Gilbert Goodwill, Joshua Jaffe, Gary Kenworthy,
+  and Pankaj Rohatgi.
+\newblock Test vector leakage assessment ({TVLA}) methodology in practice,
+  2013.
+\newblock
+  \url{http://icmc-2013.org/wp/wp-content/uploads/2013/09/goodwillkenworthtestvector.pdf}.
+
+\bibitem{DBLP:conf/eurocrypt/Coron14}
+Jean{-}S{\'{e}}bastien Coron.
+\newblock Higher order masking of look-up tables.
+\newblock In Phong~Q. Nguyen and Elisabeth Oswald, editors, {\em Advances in
+  Cryptology - {EUROCRYPT} 2014 - 33rd Annual International Conference on the
+  Theory and Applications of Cryptographic Techniques, Copenhagen, Denmark, May
+  11-15, 2014. Proceedings}, volume 8441 of {\em Lecture Notes in Computer
+  Science}, pages 441--458. Springer, 2014.
+
+\bibitem{DBLP:conf/cosade/CoronGPRRV12}
+Jean{-}S{\'{e}}bastien Coron, Christophe Giraud, Emmanuel Prouff, Soline
+  Renner, Matthieu Rivain, and Praveen~Kumar Vadnala.
+\newblock Conversion of security proofs from one leakage model to another: {A}
+  new issue.
+\newblock In Werner Schindler and Sorin~A. Huss, editors, {\em Constructive
+  Side-Channel Analysis and Secure Design - Third International Workshop,
+  {COSADE} 2012, Darmstadt, Germany, May 3-4, 2012. Proceedings}, volume 7275
+  of {\em Lecture Notes in Computer Science}, pages 69--81. Springer, 2012.
+
+\bibitem{DBLP:conf/fse/DaemenGV93}
+Joan Daemen, Ren{\'{e}} Govaerts, and Joos Vandewalle.
+\newblock A new approach to block cipher design.
+\newblock In Ross~J. Anderson, editor, {\em Fast Software Encryption, Cambridge
+  Security Workshop, Cambridge, UK, December 9-11, 1993, Proceedings}, volume
+  809 of {\em Lecture Notes in Computer Science}, pages 18--32. Springer, 1993.
+
+\bibitem{DBLP:journals/iacr/GrootPPSB16}
+Wouter de~Groot, Kostas Papagiannopoulos, Antonio de~la Piedra, Erik Schneider,
+  and Lejla Batina.
+\newblock Bitsliced masking and {ARM:} friends or foes? - fifth international
+  workshop on lightweight cryptography for security and privacy.
+\newblock Lecture Notes in Computer Science, Proccedings Pending, 2016.
+
+\bibitem{DBLP:conf/ches/GoubinP99}
+Louis Goubin and Jacques Patarin.
+\newblock {DES} and differential power analysis (the "duplication" method).
+\newblock In {\c{C}}etin~Kaya Ko{\c{c}} and Christof Paar, editors, {\em
+  Cryptographic Hardware and Embedded Systems, First International Workshop,
+  CHES'99, Worcester, MA, USA, August 12-13, 1999, Proceedings}, volume 1717 of
+  {\em Lecture Notes in Computer Science}, pages 158--172. Springer, 1999.
+
+\bibitem{cryptoeprint:2016:264}
+Dahmun Goudarzi and Matthieu Rivain.
+\newblock How fast can higher-order masking be in software?
+\newblock Cryptology ePrint Archive, Report 2016/264, 2016.
+\newblock \url{http://eprint.iacr.org/2016/264}.
+
+\bibitem{DBLP:conf/fse/GrossoLSV14}
+Vincent Grosso, Ga{\"{e}}tan Leurent, Fran{\c{c}}ois{-}Xavier Standaert, and
+  Kerem Varici.
+\newblock L{S}-designs: Bitslice encryption for efficient masked software
+  implementations.
+\newblock In Carlos Cid and Christian Rechberger, editors, {\em Fast Software
+  Encryption - 21st International Workshop, {FSE} 2014, London, UK, March 3-5,
+  2014. Revised Selected Papers}, volume 8540 of {\em Lecture Notes in Computer
+  Science}, pages 18--37. Springer, 2014.
+
+\bibitem{DBLP:journals/jce/GrossoSF14}
+Vincent Grosso, Fran{\c{c}}ois{-}Xavier Standaert, and Sebastian Faust.
+\newblock Masking vs. multiparty computation: how large is the gap for aes?
+\newblock {\em J. Cryptographic Engineering}, 4(1):47--57, 2014.
+
+\bibitem{DBLP:conf/crypto/IshaiSW03}
+Yuval Ishai, Amit Sahai, and David Wagner.
+\newblock Private circuits: Securing hardware against probing attacks.
+\newblock In Dan Boneh, editor, {\em Advances in Cryptology - {CRYPTO} 2003,
+  23rd Annual International Cryptology Conference, Santa Barbara, California,
+  USA, August 17-21, 2003, Proceedings}, volume 2729 of {\em Lecture Notes in
+  Computer Science}, pages 463--481. Springer, 2003.
+
+\bibitem{DBLP:conf/crypto/KocherJJ99}
+Paul~C. Kocher, Joshua Jaffe, and Benjamin Jun.
+\newblock Differential power analysis.
+\newblock In Wiener \cite{DBLP:conf/crypto/1999}, pages 388--397.
+
+\bibitem{DBLP:conf/ches/MangardS06}
+Stefan Mangard and Kai Schramm.
+\newblock Pinpointing the side-channel leakage of masked {AES} hardware
+  implementations.
+\newblock In Louis Goubin and Mitsuru Matsui, editors, {\em Cryptographic
+  Hardware and Embedded Systems - {CHES} 2006, 8th International Workshop,
+  Yokohama, Japan, October 10-13, 2006, Proceedings}, volume 4249 of {\em
+  Lecture Notes in Computer Science}, pages 76--90. Springer, 2006.
+
+\bibitem{DBLP:conf/fse/Messerges00}
+Thomas~S. Messerges.
+\newblock Securing the {AES} finalists against power analysis attacks.
+\newblock In Bruce Schneier, editor, {\em Fast Software Encryption, 7th
+  International Workshop, {FSE} 2000, New York, NY, USA, April 10-12, 2000,
+  Proceedings}, volume 1978 of {\em Lecture Notes in Computer Science}, pages
+  150--164. Springer, 2000.
+
+\bibitem{DBLP:conf/icics/NikovaRR06}
+Svetla Nikova, Christian Rechberger, and Vincent Rijmen.
+\newblock Threshold implementations against side-channel attacks and glitches.
+\newblock In Peng Ning, Sihan Qing, and Ninghui Li, editors, {\em Information
+  and Communications Security, 8th International Conference, {ICICS} 2006,
+  Raleigh, NC, USA, December 4-7, 2006, Proceedings}, volume 4307 of {\em
+  Lecture Notes in Computer Science}, pages 529--545. Springer, 2006.
+
+\bibitem{DBLP:conf/eurocrypt/ProuffR13}
+Emmanuel Prouff and Matthieu Rivain.
+\newblock Masking against side-channel attacks: {A} formal security proof.
+\newblock In Thomas Johansson and Phong~Q. Nguyen, editors, {\em Advances in
+  Cryptology - {EUROCRYPT} 2013, 32nd Annual International Conference on the
+  Theory and Applications of Cryptographic Techniques, Athens, Greece, May
+  26-30, 2013. Proceedings}, volume 7881 of {\em Lecture Notes in Computer
+  Science}, pages 142--159. Springer, 2013.
+
+\bibitem{DBLP:conf/eurocrypt/RenauldSVKF11}
+Mathieu Renauld, Fran{\c{c}}ois{-}Xavier Standaert, Nicolas
+  Veyrat{-}Charvillon, Dina Kamel, and Denis Flandre.
+\newblock A formal study of power variability issues and side-channel attacks
+  for nanoscale devices.
+\newblock In Kenneth~G. Paterson, editor, {\em Advances in Cryptology -
+  {EUROCRYPT} 2011 - 30th Annual International Conference on the Theory and
+  Applications of Cryptographic Techniques, Tallinn, Estonia, May 15-19, 2011.
+  Proceedings}, volume 6632 of {\em Lecture Notes in Computer Science}, pages
+  109--128. Springer, 2011.
+
+\bibitem{DBLP:conf/fse/Reparaz16}
+Oscar Reparaz.
+\newblock Detecting flawed masking schemes with leakage detection tests.
+\newblock In Thomas Peyrin, editor, {\em Fast Software Encryption - 23rd
+  International Conference, {FSE} 2016, Bochum, Germany, March 20-23, 2016,
+  Revised Selected Papers}, volume 9783 of {\em Lecture Notes in Computer
+  Science}, pages 204--222. Springer, 2016.
+
+\bibitem{DBLP:conf/ches/RivainP10}
+Matthieu Rivain and Emmanuel Prouff.
+\newblock Provably secure higher-order masking of {AES}.
+\newblock In Stefan Mangard and Fran{\c{c}}ois{-}Xavier Standaert, editors,
+  {\em Cryptographic Hardware and Embedded Systems, {CHES} 2010, 12th
+  International Workshop, Santa Barbara, CA, USA, August 17-20, 2010.
+  Proceedings}, volume 6225 of {\em Lecture Notes in Computer Science}, pages
+  413--427. Springer, 2010.
+
+\bibitem{DBLP:conf/ches/SchneiderM15}
+Tobias Schneider and Amir Moradi.
+\newblock Leakage assessment methodology - {A} clear roadmap for side-channel
+  evaluations.
+\newblock In Tim G{\"{u}}neysu and Helena Handschuh, editors, {\em
+  Cryptographic Hardware and Embedded Systems - {CHES} 2015 - 17th
+  International Workshop, Saint-Malo, France, September 13-16, 2015,
+  Proceedings}, volume 9293 of {\em Lecture Notes in Computer Science}, pages
+  495--513. Springer, 2015.
+
+\bibitem{DBLP:conf/eurocrypt/StandaertMY09}
+Fran{\c{c}}ois{-}Xavier Standaert, Tal Malkin, and Moti Yung.
+\newblock A unified framework for the analysis of side-channel key recovery
+  attacks.
+\newblock In Antoine Joux, editor, {\em Advances in Cryptology - {EUROCRYPT}
+  2009, 28th Annual International Conference on the Theory and Applications of
+  Cryptographic Techniques, Cologne, Germany, April 26-30, 2009. Proceedings},
+  volume 5479 of {\em Lecture Notes in Computer Science}, pages 443--461.
+  Springer, 2009.
+
+\bibitem{DBLP:phd/dnb/Stottinger12}
+Marc St{\"{o}}ttinger.
+\newblock {\em Mutating runtime architectures as a countermeasure against power
+  analysis attacks}.
+\newblock PhD thesis, Darmstadt University of Technology, Germany, 2012.
+
+\bibitem{noteonsca}
+Keccak team.
+\newblock {Note on side-channel attacks and their countermeasures}.
+\newblock \url{http://keccak.noekeon.org/NoteSideChannelAttacks.pdf}.
+
+\bibitem{DBLP:conf/acsac/Veshchikov14}
+Nikita Veshchikov.
+\newblock {SILK:} high level of abstraction leakage simulator for side channel
+  analysis.
+\newblock In Mila~Dalla Preda and Jeffrey~Todd McDonald, editors, {\em
+  Proceedings of the 4th Program Protection and Reverse Engineering Workshop,
+  PPREW@ACSAC 2014, New Orleans, LA, USA, December 9, 2014}, pages 3:1--3:11.
+  {ACM}, 2014.
+
+\bibitem{DBLP:conf/ctrsa/WangVGX15}
+Junwei Wang, Praveen~Kumar Vadnala, Johann Gro{\ss}sch{\"{a}}dl, and Qiuliang
+  Xu.
+\newblock Higher-order masking in practice: {A} vector implementation of masked
+  {AES} for {ARM} {NEON}.
+\newblock In Kaisa Nyberg, editor, {\em Topics in Cryptology - {CT-RSA} 2015,
+  The Cryptographer's Track at the {RSA} Conference 2015, San Francisco, CA,
+  USA, April 20-24, 2015. Proceedings}, volume 9048 of {\em Lecture Notes in
+  Computer Science}, pages 181--198. Springer, 2015.
+
+\bibitem{DBLP:conf/cardis/WhitnallOM11}
+Carolyn Whitnall, Elisabeth Oswald, and Luke Mather.
+\newblock An exploration of the {K}olmogorov-{S}mirnov test as a competitor to
+  mutual information analysis.
+\newblock In Emmanuel Prouff, editor, {\em Smart Card Research and Advanced
+  Applications - 10th {IFIP} {WG} 8.8/11.2 International Conference, {CARDIS}
+  2011, Leuven, Belgium, September 14-16, 2011, Revised Selected Papers},
+  volume 7079 of {\em Lecture Notes in Computer Science}, pages 234--251.
+  Springer, 2011.
+
+\bibitem{DBLP:conf/crypto/1999}
+Michael~J. Wiener, editor.
+\newblock {\em Advances in Cryptology - {CRYPTO} '99, 19th Annual International
+  Cryptology Conference, Santa Barbara, California, USA, August 15-19, 1999,
+  Proceedings}, volume 1666 of {\em Lecture Notes in Computer Science}.
+  Springer, 1999.
+
+\bibitem{DBLP:journals/chinaf/ZhangBLR0V15}
+Wentao Zhang, Zhenzhen Bao, Dongdai Lin, Vincent Rijmen, Bohan Yang, and Ingrid
+  Verbauwhede.
+\newblock {RECTANGLE:} a bit-slice lightweight block cipher suitable for
+  multiple platforms.
+\newblock {\em {SCIENCE} {CHINA} Information Sciences}, 58(12):1--15, 2015.
+
+\end{thebibliography}

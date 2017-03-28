@@ -1,0 +1,44 @@
+\section{Background} \label{sec:background}
+\subsection{Boolean Masking \& Order Reduction}
+Chari et al., Goubin et al. and Messerges~\cite{DBLP:conf/crypto/ChariJRR99,DBLP:conf/ches/GoubinP99,DBLP:conf/fse/Messerges00} were among the first to suggest splitting intermediate
+values with a secret sharing scheme, in order to force attackers to analyze higher-order statistical moments. Analytically, a $d$th-order Boolean masking scheme splits a sensitive value $x$ into $d+1$ shares $(x_0, x_1, \dots, x_d)$, as shown below.
+\begin{equation}
+x = x_0 \oplus  x_1 \oplus \dots \oplus x_d
+\end{equation}
+The shares $(x_0, x_1, \dots, x_d)$ are also referred to as the $(d+1)$-family of shares corresponding to $x$~\cite{DBLP:conf/ches/RivainP10}. Given that the ILA holds and assuming sufficient noise, it has been shown that the number of traces required for a successful attack grows exponentially w.r.t. the order $d$~\cite{DBLP:conf/crypto/ChariJRR99,DBLP:conf/eurocrypt/ProuffR13}. Several implementation options have been suggested for the masking countermeasure, ranging from lookup-table techniques~\cite{DBLP:conf/eurocrypt/Coron14,DBLP:conf/ctrsa/WangVGX15} to $GF$-based circuits~\cite{DBLP:conf/crypto/IshaiSW03,DBLP:journals/iacr/CanrightB09,DBLP:conf/ches/RivainP10,cryptoeprint:2016:264}.
+
+In parallel with the development of masked implementations, side-channel research focused on the practical evaluation of the countermeasure. Balasch et al.~\cite{DBLP:conf/cardis/BalaschGGRS14} put forward the concepts of value-based and distance-based leakages, as well as the notion of order reduction. We briefly restate their definitions below.
+
+\vspace{0.15cm}
+\noindent\textbf{Value/Distance-based leakage function} A leakage function $L(.)$ consists of a deterministic part $L_d(.)$ and random additive noise $N$. The leakage function is \emph{value-based} if $L_d(.)$ can only take arguments from the set of intermediate values produced by the masking scheme. The leakage is \emph{distance-based} if $L_d(.)$ can  take arguments from the set that contains all possible pairwise combinations of intermediate values. The combination can imply operations such as XOR, concatenation, etc.
+
+\vspace{0.15cm}
+\noindent\textbf{Order-reduction theorem} A $d$th-order secure masking scheme under value-based leakages is $\lfloor \frac{d}{2} \rfloor$th-order secure under distance-based leakages.
+\vspace{0.15cm}
+
+The applicablity of the order-reduction theorem has been verified experimentally by Balasch et al.~\cite{DBLP:conf/cardis/BalaschGGRS14} for orders $d=1,2$ in AVR-based and 8051-based devices. De Groot et al.~\cite{DBLP:journals/iacr/GrootPPSB16} have verified experimentally the theorem's applicability for orders $d=1,2$ in the ARM Cortex-M4.
+
+\subsection{Experimental Setup \& Evaluation}
+The implementation and SCA evaluation is performed on a smartcard equipped with an 8-bit, AVR-based ATMega163 microcontroller\footnote{\url{http://www.atmel.com/images/doc1142.pdf}}. 
+The device features a 4.4~MHz clock, 1024 bytes of SRAM and 17 Kbytes of Flash memory. 
+The acquisition of power traces is carried out using the Riscure PowerTracer\footnote{\url{https://www.riscure.com/security-tools/hardware/power-tracer}} and the Picoscope~5203 oscilloscope. The sampling rate is set at 31.5~MSamples/sec and the only post-processing applied is signal alignment.
+
+The evaluation of the \emph{actual} security order of a masking scheme is, in general, an open problem. We often face the \emph{limited attack scope}, i.e. a given attack may not be able to exploit the available leakage due to e.g. an unsuitable choice of intermediate values or an incorrect power model. To address this problem, generic side-channel distinguishers and extensive profiling techniques have been developed~\cite{DBLP:journals/joc/BatinaGPRSV11,DBLP:conf/cardis/WhitnallOM11,DBLP:conf/eurocrypt/StandaertMY09}. In this work, we opt for the
+leakage detection methodology~\cite{tvla} which prioritizes leakage detection over leakage exploitation, speeding up certain evaluation aspects. In detail, we employ the random vs. fixed, non-specific, 1st-order t-test. We perform a random vs. fixed acquisition and obtain two distinct tracesets $S_{fixed}$ and $S_{random}$, under the same encryption key. The input plaintext for $S_{fixed}$ is set to a fixed value, while for $S_{random}$, the input is uniformly random. The implementation receives the fixed or random plaintext in a non-deterministic and randomly-interleaved way (as recommended by Schneider et al. ~\cite{DBLP:conf/ches/SchneiderM15}). Following the data acquisition, the 1st-order t-test will assess whether the two sets $S_{fixed},S_{random}$ stem from the same population, using the following statistical test.
+\begin{equation}
+\begin{split}
+H_{null}: \;\; \mu_{fixed} = \mu_{random} \\
+H_{alt}: \;\; \mu_{fixed} \neq \mu_{random}
+\end{split}
+\end{equation}
+\begin{equation}
+w = \frac {\mu_{fixed} - \mu_{random}} {\sqrt{ \frac{\sigma_{fixed}^2}{n} + \frac{\sigma_{random}^2}   {m}  }  } \qquad \upsilon = \frac { (\frac{\sigma_{fixed}^2} {n}   + \frac{\sigma_{random}^2} {m}) ^2  } {\frac{\sigma_{fixed}^4} {n^2(n-1)} + \frac{\sigma_{random}^4} {m^2(m-1)}  }
+\end{equation}
+
+
+Parameters $\mu_{x}$ and $\sigma_{x}^2$ are the estimated mean and variance of set $x$; 
+$n$ and $m$ denote sizes of sets $S_{fixed}$ and $S_{random}$ respectively. The null hypothesis $H_{null}$ is rejected at a given level of significance $\alpha$ (often set to $0.99999$), if $\lvert w \lvert >  t_{\alpha/2,\upsilon}  $, where $t_{\alpha/2,\upsilon}$ is the value of the Student t distribution with $\upsilon$ degrees of freedom. In the evaluation context, rejecting $H_{null}$ implies leakage detection, i.e. potential evidence of an ineffective masking scheme.
+
+In this paper, we will use the t-test as a detection tool w.r.t. ILA-breaching effects and their solutions (see Section 3). Still, we will also employ 1st-order CPA methods~\cite{DBLP:conf/ches/BrierCO04} in order to demonstrate the exploitability of such effects. In order to reduce the computational cost of the evaluation, we use the memoryless formulas suggested by Schneider et al.~\cite{DBLP:conf/ches/SchneiderM15} and the incremental approach for CPA by Botinelli et al.~\cite{DBLP:journals/iacr/BottinelliB15}.
+
+
